@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="fronoffice_style.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <title>Login</title>
+</head>
+<body style="background-color: #f1f1f1;">
+<form action="frontoffice/home/login" method="post">
+    <div class="imgcontainer">
+        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+        <img src="images/avatar.png" alt="Avatar" class="avatar" style="width: 300px">
+    </div>
+
+    <div class="container">
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" id="uname" required>
+
+        <label for="psw2"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" id="psw2" required>
+
+        <button type="submit">Login</button>
+        <label>
+            <input type="checkbox" checked="checked" name="remember"> Remember me
+        </label>
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+        <span class="psw">Forgot <a href="#">password?</a></span>
+    </div>
+</form>
+</body>
+</html>

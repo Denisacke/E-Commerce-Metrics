@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="fronoffice_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <title>Shop</title>
+    <style>
+        body {
+            background-color: #6b6e70;
+        }
+        .parallax1 {
+            /* The image used */
+            background-image: url("images/D.png");
+
+            /* Set a specific height */
+            height: 500px;
+
+            /* Create the parallax scrolling effect */
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            position: relative;
+        }
+        .parallax2 {
+            /* The image used */
+            background-image: url("images/I.png");
+
+            /* Set a specific height */
+            min-height: 500px;
+
+            /* Create the parallax scrolling effect */
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            position: relative;
+        }
+        .parallax3 {
+            /* The image used */
+            background-image: url("images/V.png");
+
+            /* Set a specific height */
+            min-height: 500px;
+
+            /* Create the parallax scrolling effect */
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            position: relative;
+        }
+        .parallax4 {
+            /* The image used */
+            background-image: url("images/T.png");
+
+            /* Set a specific height */
+            min-height: 500px;
+
+            /* Create the parallax scrolling effect */
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            position: relative;
+        }
+        .parallax5 {
+            /* The image used */
+            background-color: #6b6e70;
+
+            /* Set a specific height */
+            min-height: 500px;
+
+            /* Create the parallax scrolling effect */
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            position: relative;
+        }
+
+        .container-home {
+            background-color: rgba(34, 38, 41, 0.7);
+            text-align: center;
+            padding: 20px;
+            margin: auto;
+            alignment: center;
+            width: 900px;
+            height: 300px;
+            font-family: "Arial Black" ;
+            font-size: 150px;
+            color: aliceblue;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -150px 0 0 -450px;
+        }
+
+        .container-home:hover {
+            background-color: rgba(134, 194, 50, 0.8);
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+            font-family: arial;
+            height: 540px;
+            float: bottom;
+            transition: transform 330ms ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.1,1.1);
+        }
+
+        .price {
+            color: grey;
+            font-size: 22px;
+        }
+
+        .card button {
+            border: none;
+            outline: 0;
+            padding: 12px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        .card button:hover {
+            opacity: 0.7;
+        }
+
+        .card-horizontal {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            margin: auto;
+            text-align: center;
+            font-family: arial;
+            height: 100px;
+            transition: transform 330ms ease-in-out;
+            flex-grow: 1;
+        }
+
+        .card-horizontal img {
+            transform: scale(0.8,0.8);
+            transition: transform 330ms ease-in-out;
+        }
+
+        .card-horizontal:hover {
+            transform: translateX(-15px);
+        }
+
+        .card-horizontal:hover img {
+            transform: scale(1,1);
+        }
+
+        .table-home {
+            margin: auto;
+        }
+
+        .table-home td {
+            margin: auto;
+            padding: 50px;
+        }
+
+        .table-home2 {
+            margin: auto;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .table-home2 td {
+            margin: auto;
+            padding: 2px;
+            width: 100%;
+            display: flex;
+        }
+
+        /* Full-width input fields */
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        /* Set a style for all buttons */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .container-home button {
+            background-color: rgba(0, 0, 0, 0.0);
+            text-align: center;
+            padding: 20px;
+            margin: auto;
+            alignment: center;
+            width: 900px;
+            height: 300px;
+            font-family: "Arial Black" ;
+            font-size: 150px;
+            color: aliceblue;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -150px 0 0 -450px;
+
+            border: none;
+            cursor: pointer;
+        }
+
+        .container-home button:hover {
+            background-color: #86c232;
+            opacity: 0.8;
+        }
+
+        /* Extra styles for the cancel button */
+        .cancelbtn1 {
+            width: auto;
+            padding: 10px 18px;
+            background-color: #f44336;
+        }
+
+        /* Center the image and position the close button */
+        .imgcontainer {
+            text-align: center;
+            margin: 24px 0 12px 0;
+            position: relative;
+        }
+
+        img.avatar {
+            width: 40%;
+            border-radius: 50%;
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+        span.psw {
+            float: right;
+            padding-top: 16px;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button (x) */
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 0;
+            color: #000;
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: red;
+            cursor: pointer;
+        }
+
+        /* Add Zoom Animation */
+        .animate {
+            -webkit-animation: animatezoom 0.6s;
+            animation: animatezoom 0.6s
+        }
+
+        @-webkit-keyframes animatezoom {
+            from {-webkit-transform: scale(0)}
+            to {-webkit-transform: scale(1)}
+        }
+
+        @keyframes animatezoom {
+            from {transform: scale(0)}
+            to {transform: scale(1)}
+        }
+
+        /* Change styles for span and cancel button on extra small screens */
+        @media screen and (max-width: 300px) {
+            span.psw {
+                display: block;
+                float: none;
+            }
+            .cancelbtn {
+                width: 100%;
+            }
+        }
+
+        button {
+            background-color: #86c232;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.8;
+        }
+
+        button:hover {
+            opacity:1;
+        }
+
+        button:disabled {
+            opacity: 0.2;
+        }
+
+        /* Extra styles for the cancel button */
+        .cancelbtn {
+            padding: 14px 20px;
+            background-color: #f44336;
+        }
+
+        /* Float cancel and signup buttons and add an equal width */
+        .cancelbtn, .signupbtn {
+            float: left;
+            width: 50%;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            width: 300px;
+            height: 300px;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .flip-card-front {
+            background-color: #bbb;
+            color: black;
+        }
+
+        .flip-card-back {
+            background-color: #86c232;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .navbar {
+            background-color: #474b4f;
+            height: 65px;
+            position: sticky;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-ul{
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .navbar-ul li {
+            display: inline-block;
+            margin: 7px 7px 7px 7px;
+        }
+
+        .navbar-ul li a {
+            text-decoration: none;
+            color: aliceblue;
+            font-size: 32px;
+            font-family: 'Arial';
+            text-align: center;
+            height: 50px;
+            display: inline-block;
+        }
+
+        .navbar-ul li a:hover {
+            background-color: #86c232;
+            opacity: 0.7;
+            height: 50px;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .active-page {
+            background-color: #86c232;
+        }
+
+        /* Style The Dropdown Button */
+        .dropbtn {
+            background-color: #474b4f;
+            color: aliceblue;
+            font-size: 32px;
+            font-family: 'Arial';
+            text-align: center;
+            cursor: pointer;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dropbtn:hover {
+            background-color: #86c232;
+            opacity: 0.7;
+        }
+
+        .categories {
+            background-color: #f1f1f1;
+            margin: auto;
+            width: 600px;
+            height: 800px;
+            overflow: scroll;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -400px 0 0 -300px;
+        }
+
+        .categories ul{
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .categories ul li {
+            display: block;
+        }
+
+        .categories ul li a {
+            height: 35px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin: 3px;
+            padding: 5px;
+            color: black;
+            text-transform: uppercase;
+            font-weight: 1000;
+            font-size: 20px;
+            letter-spacing: 3px;
+        }
+
+        .categories ul li a:hover {
+            background-color: #474b4f;
+            color: #f1f1f1;
+        }
+
+        .container-shop {
+            background-color: rgba(76, 175, 80, 0.5);
+            text-align: center;
+            padding: 50px;
+            margin: auto;
+            alignment: center;
+            width: 1800px;
+            height: auto;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -380px 0 0 -900px;
+        }
+
+        .message {
+            background-color: #f1f1f1;
+            font-size: 20px;
+            font-family: "Arial Black";
+            color: #0e0e0e;
+            width: 400px;
+            height: 70px;
+            margin: auto;
+            text-align: center;
+            padding: 20px;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -35px 0 0 -200px;
+        }
+
+        .link {
+            width: auto;
+            display: inline-block;
+            background-color: #86c232;
+            opacity: 0.8;
+            text-decoration: none;
+            color: aliceblue;
+            font-size: 30px;
+            margin: 7px;
+            padding: 3px 7px 3px 7px;
+        }
+        
+        .link:hover {
+            opacity: 1;
+            text-decoration: none;
+            cursor: pointer;
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <ul class="navbar-ul">
+        <li><a href="/frontoffice">Home</a></li>
+        <li class="active-page"><a href="/frontoffice/shop">Shop</a></li>
+        <li>
+            <button class="dropbtn" onclick="document.getElementById('id02').style.display='block'">Categories</button>
+        </li>
+        <li><a href="/frontoffice/shop/cart">My cart</a></li>
+        <li><a href="/frontoffice/shop/wishlist">Wishlist</a></li>
+    </ul>
+    <div style="float: right;">
+        <form style="margin: 0 5px 2px 5px;" action="/action_page.php">
+            <div style="float: left;">
+                <input type="text" id="product" onkeyup="dynamicSearch()" placeholder="Search..." name="product">
+            </div>
+            <div style="float: right;">
+                <button type="submit" disabled style="opacity: 1;"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+    <div style="float: right;">
+        <a class="link" href="/logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container-shop">
+    <table class = "table-home" id="myTable">
+        <tr th:each="product : ${products}">
+            <td>
+                <div class="card">
+                  <!--  <img th:src="images/${product.picture}" alt="Apples" style="width:100%"> -->
+                    <h1 th:text="${product.name}"></h1>
+                    <p class="price" th:text="${product.price}"></p>
+                    <form action="#" th:action="@{/frontoffice/shop/wishlist/add/{id}(id=${product.id})}" method="post">
+                        <button type="submit" onclick="document.getElementById('id04').style.display='block'">Add to wishlist</button>
+                    </form>
+                    <form action="#" th:action="@{/frontoffice/shop/cart/add/{id}(id=${product.id})}" method="post">
+                        <button type="submit" onclick="document.getElementById('id03').style.display='block'">Add to cart</button>
+                    </form>
+                   <!-- <button th:action="@{/frontoffice/whishlist/add/{id}(id=${product.id})}" th:object="${entity}"onclick="document.getElementById('id04').style.display='block'">Add to wishlist</button> -->
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="id02" class="modal animate">
+    <!-- use thymeleaf to give an object -->
+    <span onclick="document.getElementById('id02').style.display='none'" style="width: auto;" class="close" title="Close Modal">&times;</span>
+    <div class="categories">
+        <ul th:each="category : ${categories}">
+            <li th:text="${category.name}"><a th:href="@{/frontoffice/products/bycateg/{id}(id=${category.id})}"></a></li>
+        </ul>
+    </div>
+</div>
+<div id="id03" class="modal animate">
+    <!-- use thymeleaf to give an object -->
+    <span onclick="document.getElementById('id03').style.display='none'" style="width: auto;" class="close" title="Close Modal">&times;</span>
+    <div class="message">
+        <p>Item added to cart!</p>
+    </div>
+</div>
+<div id="id04" class="modal animate">
+    <!-- use thymeleaf to give an object -->
+    <span onclick="document.getElementById('id04').style.display='none'" style="width: auto;" class="close" title="Close Modal">&times;</span>
+    <div class="message">
+        <p>Item added to wishlist!</p>
+    </div>
+</div>
+<script>
+    // Get the modal
+    var modal = document.getElementById('id02');
+    var modal2 = document.getElementById('id03');
+    var modal3 = document.getElementById('id04');
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal || event.target == modal2 || event.target == modal3) {
+            modal.style.display = "none";
+            modal2.style.display = "none";
+            modal3.style.display = "none";
+        }
+        setTimeout(function() {
+            console.log(modal2.style.display);
+            modal2.style.display = "none";
+            modal3.style.display = "none";
+        }, 1500);
+    }
+    function dynamicSearch() {
+        let input, filter, table, tr, td, i, txtValue, j;
+        input = document.getElementById("product");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td");
+            if (td) {
+                console.log(td[i]);
+                console.log(i);
+                for( j = 0; j < td.length; j++) {
+                    let div = td[j].getElementsByTagName("div")[0];
+                    let h1 = div.getElementsByTagName("h1")[0];
+                    txtValue = h1.textContent || h1.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        td[j].style.display = "";
+                    } else {
+                        td[j].style.display = "none";
+                    }
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>

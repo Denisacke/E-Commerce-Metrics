@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <meta charset="UTF-8">
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <title>Inventar</title>
+</head>
+
+
+<style>
+    @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #fafafa;
+    }
+
+    p {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1em;
+        font-weight: 300;
+        line-height: 1.7em;
+        color: #999;
+    }
+
+    a, a:hover, a:focus {
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .navbar {
+        padding: 15px 10px;
+        background: #fff;
+        border: none;
+        border-radius: 0;
+        margin-bottom: 40px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-btn {
+        box-shadow: none;
+        outline: none !important;
+        border: none;
+    }
+
+    .line {
+        width: 100%;
+        height: 1px;
+        border-bottom: 1px dashed #ddd;
+        margin: 40px 0;
+    }
+
+    /* ---------------------------------------------------
+        SIDEBAR STYLE
+    ----------------------------------------------------- */
+
+    .wrapper {
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+        perspective: 1500px;
+    }
+
+
+    #sidebar {
+        min-width: 250px;
+        max-width: 250px;
+        background: #212529;
+        color: #fff;
+        transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
+        transform-origin: bottom left;
+    }
+
+    #sidebar.active {
+        margin-left: -250px;
+        transform: rotateY(100deg);
+    }
+
+    #sidebar .sidebar-header {
+        padding: 20px;
+        background: #212529;
+    }
+
+    #sidebar ul.components {
+        padding: 20px 0;
+        border-bottom: 1px solid #2c3034;
+    }
+
+    #sidebar ul p {
+        color: #fff;
+        padding: 10px;
+    }
+
+    #sidebar ul li a {
+        padding: 10px;
+        font-size: 1.1em;
+        display: block;
+    }
+    #sidebar ul li a:hover {
+        color: #2c3034;
+        background: #fff;
+    }
+
+    #sidebar ul li.active > a, a[aria-expanded="true"] {
+        color: #fff;
+        background: #2c3034;
+    }
+
+
+    a[data-toggle="collapse"] {
+        position: relative;
+    }
+
+    .dropdown-toggle::after {
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+    }
+
+    ul ul a {
+        font-size: 0.9em !important;
+        padding-left: 30px !important;
+        background: #2c3034;
+    }
+
+    .sidebar-item {
+        background: #2c3034;
+    }
+
+    /* ---------------------------------------------------
+        CONTENT STYLE
+    ----------------------------------------------------- */
+    #content {
+        width: 100%;
+        padding: 20px;
+        min-height: 100vh;
+        transition: all 0.3s;
+    }
+
+    #sidebarCollapse {
+        width: 40px;
+        height: 40px;
+        background: #f5f5f5;
+        cursor: pointer;
+    }
+
+    #sidebarCollapse span {
+        width: 80%;
+        height: 2px;
+        margin: 0 auto;
+        display: block;
+        background: #555;
+        transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
+        transition-delay: 0.2s;
+    }
+
+    #sidebarCollapse span:first-of-type {
+        transform: rotate(45deg) translate(2px, 2px);
+    }
+    #sidebarCollapse span:nth-of-type(2) {
+        opacity: 0;
+    }
+    #sidebarCollapse span:last-of-type {
+        transform: rotate(-45deg) translate(1px, -1px);
+    }
+
+
+    #sidebarCollapse.active span {
+        transform: none;
+        opacity: 1;
+        margin: 5px auto;
+    }
+
+
+    /* ---------------------------------------------------
+        MEDIAQUERIES
+    ----------------------------------------------------- */
+    @media (max-width: 768px) {
+        #sidebar {
+            margin-left: -250px;
+            transform: rotateY(90deg);
+        }
+        #sidebar.active {
+            margin-left: 0;
+            transform: none;
+        }
+        #sidebarCollapse span:first-of-type,
+        #sidebarCollapse span:nth-of-type(2),
+        #sidebarCollapse span:last-of-type {
+            transform: none;
+            opacity: 1;
+            margin: 5px auto;
+        }
+        #sidebarCollapse.active span {
+            margin: 0 auto;
+        }
+        #sidebarCollapse.active span:first-of-type {
+            transform: rotate(45deg) translate(2px, 2px);
+        }
+        #sidebarCollapse.active span:nth-of-type(2) {
+            opacity: 0;
+        }
+        #sidebarCollapse.active span:last-of-type {
+            transform: rotate(-45deg) translate(1px, -1px);
+        }
+
+    }
+</style>
+
+<body>
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Store Management</h3>
+        </div>
+
+        <ul class="list-unstyled components">
+            <li class="sidebar-item">
+                <a href="/">Home</a>
+            </li>
+            <li class="sidebar-item">
+
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Lists</a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a href="/backoffice/product">Product list</a>
+                    </li>
+                    <li>
+                        <a href="/backoffice/employee">Employee list</a>
+                    </li>
+                    <li>
+                        <a href="/backoffice/customer">Customer list</a>
+                    </li>
+                    <li>
+                        <a href="/backoffice/complaint">Complaint list</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Page Content Holder -->
+    <div id="content">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="navbar-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-align-justify"></i>
+                </button>
+                <a href="/logout">Logout</a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <form class="form-inline my-2 my-lg-0">
+                                <input onkeyup="filter()" id="customer-input" class="form-control mr-sm-2" type="search" placeholder="Search for a customer" aria-label="Search">
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--        <a th:href="@{static/documents/${filename}}" id="download-btn" class="download" hidden="hidden">Descarca fisier</a>-->
+        <div class="container-fluid" style="width: 60%">
+            <table id="content-table" class="table table-striped table-dark">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Complaint type</th>
+                    <th scope="col">Status</th>
+<!--                    <th scope="col">-->
+<!--                        <a class="btn btn-dark" href="/backoffice/complaint/add" style="float: right">-->
+<!--                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">-->
+<!--                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>-->
+<!--                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>-->
+<!--                            </svg>-->
+<!--                        </a>-->
+<!--                    </th>-->
+                </tr>
+                <tbody>
+                <tr th:each="complaint : ${complaints}">
+                    <td th:text="${complaint.id}">1</td>
+                    <td th:text="${complaint.type}">Text ...</td>
+                    <td th:text="${complaint.status}">Text ...</td>
+                    <td style="float: right">
+                        <a th:href="@{/backoffice/complaint/view/{id}(id = ${complaint.id})}" class="btn btn-dark">View</a>
+                        <a href="${product.id}" th:href="@{/backoffice/complaint/delete/{id}(id = ${complaint.id})}" class="btn btn-dark">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- Popper.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!-- Optional: include a polyfill for ES6 Promises for IE11 -->
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.6.1/dist/sweetalert2.all.min.js"></script>
+
+<script type="text/javascript" th:inline="javascript">
+
+    function filter() {
+        let input = document.getElementById("customer-input");
+        let tr = document.getElementById("content-table").getElementsByTagName("tr");
+        for(let i = 1; i < tr.length; i++){
+            let td = tr[i].getElementsByTagName("td")[1];
+            console.log(tr[i]);
+            if(td != null){
+                let txt = td.textContent;
+                console.log(txt);
+                if(txt.toUpperCase().indexOf(input.value.toUpperCase()) != -1){
+                    tr[i].style.display = "";
+                }else{
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+            $(this).toggleClass('active');
+        });
+
+        /*<![CDATA[*/
+        let successMessage = [[${success}]];
+        let fileName = [[${filename}]];
+        if(successMessage != ""){
+            if(successMessage.indexOf("Error") !== -1){
+                Swal.fire({
+                        background: 'rgba(0, 0, 0, 0.8)',
+                        title: '<p style="color: #ffffff">Error</p>',
+                        html: '<p style="color: #ffffff">' + successMessage + '</p>',
+                        icon: 'error'
+
+                    }
+
+                )
+            }else
+            if (successMessage.indexOf("Tabel") != -1) {
+                Swal.fire({
+                    title: 'Operatie efectuata',
+                    text: successMessage,
+                    icon: 'success',
+                    background: 'rgba(0, 0, 0, 0.8)',
+                    showCancelButton: true,
+                    confirmButtonColor: '#00e600',
+                    cancelButtonColor: '#4d4d4d',
+                    cancelButtonText: 'Anuleaza',
+                    confirmButtonText: 'Descarca fisier'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        console.log(fileName);
+                        let anchor = document.createElement('a');
+                        anchor.href = "product/" + fileName;
+                        anchor.download = fileName;
+                        console.log(anchor.href);
+                        anchor.click();
+                        Swal.fire({
+                            background: 'rgba(0, 0, 0, 0.8)',
+                            title: 'Succes!',
+                            html: 'Descarcare efectuata!',
+                            icon: 'success'
+
+
+                        })
+                    }
+                })
+            }else{
+                Swal.fire({
+                        background: 'rgba(0, 0, 0, 0.8)',
+                        title: '<p style="color: #ffffff">Operatie efectuata</p>',
+                        html: '<p style="color: #ffffff">' + successMessage + '</p>',
+                        icon: 'success'
+
+                    }
+
+                )
+            }
+        }
+        /*]]>*/
+
+    });
+</script>
+</html>
