@@ -1,21 +1,16 @@
 package com.commerce.controller;
 
-import com.commerce.model.Employee;
+import com.commerce.Constants;
 import com.commerce.model.Product;
 import com.commerce.model.Wishlist;
 import com.commerce.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -25,7 +20,7 @@ public class WishlistController {
 
     @GetMapping("/frontoffice/shop/wishlist")
     public String getList(Model model, HttpServletRequest request) {
-        if(request.isUserInRole("ROLE_CUSTOMER")){
+        if(request.isUserInRole(Constants.CUSTOMER_ROLE)){
 
             CustomerService customerService = new CustomerService();
             Long customer_id = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
@@ -47,7 +42,7 @@ public class WishlistController {
 
     @PostMapping("/frontoffice/shop/wishlist/add/{id}")
     public String addEntry(@PathVariable String id, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-        if(request.isUserInRole("ROLE_CUSTOMER")){
+        if(request.isUserInRole(Constants.CUSTOMER_ROLE)){
             CustomerService customerService = new CustomerService();
             Long customer_id = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
             Wishlist form = new Wishlist(customer_id.intValue(), Integer.parseInt(id));
@@ -66,7 +61,7 @@ public class WishlistController {
 
     @PostMapping("/frontoffice/shop/wishlist/delete/{id}")
     public String delEntry(Model model, @PathVariable String id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        if(request.isUserInRole("ROLE_CUSTOMER")) {
+        if(request.isUserInRole(Constants.CUSTOMER_ROLE)) {
             ProductService productService = new ProductService();
 
             CustomerService customerService = new CustomerService();

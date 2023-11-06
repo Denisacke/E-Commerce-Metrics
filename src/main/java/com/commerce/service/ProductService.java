@@ -5,6 +5,7 @@ import com.commerce.repository.ProductRepository;
 
 import java.util.List;
 
+@org.springframework.stereotype.Service
 public class ProductService implements Service<Product> {
 
     private ProductRepository productRepository;
@@ -31,6 +32,10 @@ public class ProductService implements Service<Product> {
 
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    public List<Product> findAll(String sortCriteria) {
+        return productRepository.findSortedProducts(sortCriteria);
     }
 
     public boolean delete(Product entity) {

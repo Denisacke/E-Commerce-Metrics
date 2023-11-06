@@ -1,5 +1,6 @@
 package com.commerce.service;
 
+import com.commerce.Constants;
 import com.commerce.model.Customer;
 import com.commerce.model.Employee;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,7 +24,7 @@ public class FrontofficeUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+        return Arrays.asList(new SimpleGrantedAuthority(Constants.CUSTOMER_ROLE));
     }
 
     @Override

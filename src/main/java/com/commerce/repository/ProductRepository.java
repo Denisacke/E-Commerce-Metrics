@@ -7,6 +7,7 @@ import org.hibernate.Session;
 
 import java.util.List;
 
+@org.springframework.stereotype.Repository
 public class ProductRepository implements Repository<Product> {
 
     public Product save(Product entity) {
@@ -22,7 +23,6 @@ public class ProductRepository implements Repository<Product> {
             databaseSession.getTransaction().commit();
         }
         else {
-
             return null;
         }
         return entity;
@@ -70,6 +70,24 @@ public class ProductRepository implements Repository<Product> {
         return result;
     }
 
+    public List<Product> findSortedProducts(String sortCriteria) {
+        if(sortCriteria == null) {
+            return findAll();
+        }
+        Session databaseSession = HibernateService.getSessionFactory().openSession();
+        String order;
+        if(sortCriteria.startsWith("asc")){
+            order = "asc";
+        } else if(sortCriteria.startsWith("desc")){
+            order = "desc";
+        } else {
+            return findAll();
+        }
+
+        String queryString = "from Product order by name " + order;
+        Query query = databaseSession.createQuery(queryString);
+        return query.list();
+    }
 
     public boolean delete(Product entity) {
         Session databaseSession = HibernateService.getSessionFactory().openSession();

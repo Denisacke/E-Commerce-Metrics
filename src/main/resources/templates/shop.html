@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Shop</title>
     <style>
         body {
@@ -585,25 +586,20 @@
     </div>
 </nav>
 
-<div class="container-shop">
-    <table class = "table-home" id="myTable">
-        <tr th:each="product : ${products}">
-            <td>
-                <div class="card">
-                  <!--  <img th:src="images/${product.picture}" alt="Apples" style="width:100%"> -->
-                    <h1 th:text="${product.name}"></h1>
-                    <p class="price" th:text="${product.price}"></p>
-                    <form action="#" th:action="@{/frontoffice/shop/wishlist/add/{id}(id=${product.id})}" method="post">
-                        <button type="submit" onclick="document.getElementById('id04').style.display='block'">Add to wishlist</button>
-                    </form>
-                    <form action="#" th:action="@{/frontoffice/shop/cart/add/{id}(id=${product.id})}" method="post">
-                        <button type="submit" onclick="document.getElementById('id03').style.display='block'">Add to cart</button>
-                    </form>
-                   <!-- <button th:action="@{/frontoffice/whishlist/add/{id}(id=${product.id})}" th:object="${entity}"onclick="document.getElementById('id04').style.display='block'">Add to wishlist</button> -->
-                </div>
-            </td>
-        </tr>
-    </table>
+<div class="flex flex-row flex-wrap">
+    <div th:each="product : ${products}" class="flex flex-col border-shadow h-auto w-auto bg-white space-y-2 p-2 mr-2">
+        <!--  <img th:src="images/${product.picture}" alt="Apples" style="width:100%"> -->
+        <h1 th:text="${product.name}"></h1>
+        <p class="price" th:text="${product.price}"></p>
+        <image th:src="@{/images/{picture}(picture=${product.picture})}" th:width="300" th:height="300"></image>
+        <form action="#" th:action="@{/frontoffice/shop/wishlist/add/{id}(id=${product.id})}" method="post">
+            <button type="submit" onclick="document.getElementById('id04').style.display='block'">Add to wishlist</button>
+        </form>
+        <form action="#" th:action="@{/frontoffice/shop/cart/add/{id}(id=${product.id})}" method="post">
+            <button type="submit" onclick="document.getElementById('id03').style.display='block'">Add to cart</button>
+        </form>
+        <!-- <button th:action="@{/frontoffice/whishlist/add/{id}(id=${product.id})}" th:object="${entity}"onclick="document.getElementById('id04').style.display='block'">Add to wishlist</button> -->
+    </div>
 </div>
 
 <div id="id02" class="modal animate">

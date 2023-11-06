@@ -2,7 +2,6 @@ package com.commerce.controller;
 
 import com.commerce.model.Complaint;
 import com.commerce.model.Customer;
-import com.commerce.model.Product;
 import com.commerce.service.ComplaintService;
 import com.commerce.service.CustomerService;
 import com.commerce.service.MailSender;

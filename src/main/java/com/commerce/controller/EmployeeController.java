@@ -1,5 +1,6 @@
 package com.commerce.controller;
 
+import com.commerce.Constants;
 import com.commerce.model.Employee;
 import com.commerce.service.EmployeeService;
 import com.commerce.service.MailSender;
@@ -21,7 +22,7 @@ public class EmployeeController {
 
     @GetMapping("/backoffice/employee")
     public String getEmployees(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes){
-        if(request.isUserInRole("ROLE_ADMIN")) {
+        if(request.isUserInRole(Constants.ADMIN_ROLE)) {
             model.addAttribute("employees", employeeService.findAll());
             return "employees";
         }else{
@@ -32,7 +33,7 @@ public class EmployeeController {
 
     @GetMapping("/backoffice/employee/add")
     public String getEntryForm(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes){
-        if(request.isUserInRole("ROLE_ADMIN")) {
+        if(request.isUserInRole(Constants.ADMIN_ROLE)) {
             Employee entry = new Employee();
             model.addAttribute("entry", entry);
             return "add_employee";
@@ -65,7 +66,7 @@ public class EmployeeController {
 
     @GetMapping("/backoffice/employee/delete/{id}")
     public String delEntry(Model model, @PathVariable String id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        if(request.isUserInRole("ROLE_ADMIN")) {
+        if(request.isUserInRole(Constants.ADMIN_ROLE)) {
             Employee entity = employeeService.findById((long) Integer.parseInt(id));
             if (employeeService.delete(entity)) {
                 redirectAttributes.addFlashAttribute("success", "Ai sters cu succes produsul: " + entity.getUsername());

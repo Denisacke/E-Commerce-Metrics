@@ -1,8 +1,6 @@
 package com.commerce.service;
 
 import com.commerce.model.Wishlist;
-import com.commerce.model.Wishlist;
-import com.commerce.repository.WishlistRepository;
 import com.commerce.repository.WishlistRepository;
 
 import java.util.List;

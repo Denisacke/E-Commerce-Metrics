@@ -1,8 +1,8 @@
 package com.commerce.controller;
 
+import com.commerce.Constants;
 import com.commerce.model.Cart;
 import com.commerce.model.Product;
-import com.commerce.model.Wishlist;
 import com.commerce.service.CartService;
 import com.commerce.service.CategoryService;
 import com.commerce.service.CustomerService;
@@ -10,13 +10,11 @@ import com.commerce.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +25,7 @@ public class CartController {
 
     @GetMapping("/frontoffice/shop/cart")
     public String getList(Model model, HttpServletRequest request) {
-        if(request.isUserInRole("ROLE_CUSTOMER")){
+        if(request.isUserInRole(Constants.CUSTOMER_ROLE)){
 
             CustomerService customerService = new CustomerService();
             Long customer_id = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
@@ -49,7 +47,7 @@ public class CartController {
 
     @PostMapping("/frontoffice/shop/cart/add/{id}")
     public String addEntry(@PathVariable String id, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-        if(request.isUserInRole("ROLE_CUSTOMER")){
+        if(request.isUserInRole(Constants.CUSTOMER_ROLE)){
             CustomerService customerService = new CustomerService();
             Long customer_id = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
             Cart form = new Cart(customer_id.intValue(),Integer.parseInt((id)), 1);
@@ -68,7 +66,7 @@ public class CartController {
 
     @PostMapping("/frontoffice/shop/cart/delete/{id}")
     public String delEntry(Model model, @PathVariable String id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        if(request.isUserInRole("ROLE_CUSTOMER")) {
+        if(request.isUserInRole(Constants.CUSTOMER_ROLE)) {
             ProductService productService = new ProductService();
             CustomerService customerService = new CustomerService();
 

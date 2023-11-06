@@ -1,6 +1,5 @@
 package com.commerce.repository;
 
-import com.commerce.model.Customer;
 import com.commerce.model.Employee;
 import com.commerce.service.HibernateService;
 import org.hibernate.Query;
@@ -8,6 +7,7 @@ import org.hibernate.Session;
 
 import java.util.List;
 
+@org.springframework.stereotype.Repository
 public class EmployeeRepository implements Repository<Employee>{
 
     @Override

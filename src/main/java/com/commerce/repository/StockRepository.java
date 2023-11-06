@@ -1,7 +1,5 @@
 package com.commerce.repository;
 
-import com.commerce.model.Order;
-import com.commerce.model.Product;
 import com.commerce.model.Stock;
 import com.commerce.service.HibernateService;
 import org.hibernate.Query;

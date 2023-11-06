@@ -1,7 +1,6 @@
 package com.commerce.repository;
 
 import com.commerce.model.Wishlist;
-import com.commerce.model.Wishlist;
 import com.commerce.service.HibernateService;
 import org.hibernate.Query;
 import org.hibernate.Session;

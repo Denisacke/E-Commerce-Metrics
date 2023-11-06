@@ -277,7 +277,7 @@
                 </div>
                 <div class="modal-body">
                     <form action="#" th:action="@{/backoffice/product/add/submit}" th:object="${entry}"
-                          method="post">
+                          method="post" enctype="multipart/form-data">
                         <fieldset>
 
                             <div class="form-group">
@@ -296,7 +296,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="picture">Picture</label>
-                                <input type="file" th:field="*{picture}" class="form-control-file" id="picture">
+                                <input type="file" class="form-control-file" name="picture" id="picture">
                             </div>
 
                         </fieldset>

@@ -1,5 +1,6 @@
 package com.commerce.service;
 
+import com.commerce.Constants;
 import com.commerce.model.Employee;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,7 +22,7 @@ public class BackofficeUser implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        return Arrays.asList(new SimpleGrantedAuthority(Constants.EMPLOYEE_ROLE));
     }
 
     @Override

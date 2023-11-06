@@ -1,8 +1,6 @@
 package com.commerce.model;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,6 +39,13 @@ public class Product extends AbstractEntity{
 
     public Product() {
 
+    }
+
+    public Product(String name, double price, int id_category, String description) {
+        this.name = name;
+        this.price = price;
+        this.id_category = id_category;
+        this.description = description;
     }
 
     public Product(String name, double price, int id_category, String description, String picture) {

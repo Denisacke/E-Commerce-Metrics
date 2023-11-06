@@ -9,6 +9,7 @@ import org.hibernate.Session;
 
 import java.util.List;
 
+@org.springframework.stereotype.Repository
 public class CustomerRepository implements Repository<Customer> {
 
     @Override

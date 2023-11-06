@@ -1,35 +1,30 @@
 package com.commerce.controller;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.http.MediaType;
+import com.commerce.service.BackofficeUserDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.*;
-import javax.servlet.descriptor.JspConfigDescriptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.EventListener;
-import java.util.Map;
-import java.util.Set;
 
 @Controller
 public class HomeController {
+
+    @Autowired
+    private BackofficeUserDetailService backofficeUserDetailService;
 
     @GetMapping({"/backoffice/home", "/backoffice"})
     public String renderHomePage(Model model){
         return "home";
     }
+
+    @GetMapping("/access_denied")
+    public String renderForbiddenAccessPage(){ return "access_denied"; }
 
     @GetMapping({"/", "/frontoffice"})
     public String renderShopPage(Model model){

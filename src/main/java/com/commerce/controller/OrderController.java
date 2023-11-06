@@ -1,9 +1,9 @@
 package com.commerce.controller;
 
+import com.commerce.Constants;
 import com.commerce.model.Cart;
 import com.commerce.model.Order;
 import com.commerce.model.Product;
-import com.commerce.model.Wishlist;
 import com.commerce.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +22,7 @@ public class OrderController {
 
     @PostMapping("/frontoffice/shop/order/submit")
     public String addEntry(@RequestParam String form, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-        if(request.isUserInRole("ROLE_CUSTOMER")){
+        if(request.isUserInRole(Constants.CUSTOMER_ROLE)){
             CustomerService customerService = new CustomerService();
             Long customer_id = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
 
