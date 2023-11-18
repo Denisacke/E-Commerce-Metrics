@@ -29,6 +29,14 @@ public class CategoryRepository implements Repository<Category> {
         return result.get(0);
     }
 
+    public Category findByName(String categoryName) {
+        Session databaseSession = HibernateService.getSessionFactory().openSession();
+        Query query = databaseSession.createQuery("FROM Category X WHERE X.name = :name");
+        query.setParameter("name", categoryName);
+        List<Category> result = query.list();
+        return result.get(0);
+    }
+
     @Override
     public List<Category> findAll() {
         Session databaseSession = HibernateService.getSessionFactory().openSession();

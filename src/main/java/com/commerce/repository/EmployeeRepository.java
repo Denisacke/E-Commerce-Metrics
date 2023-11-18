@@ -17,8 +17,7 @@ public class EmployeeRepository implements Repository<Employee>{
         Query query = databaseSession.createQuery("FROM Employee X WHERE X.username = :username OR X.email = :email");
         query.setParameter("username", entity.getUsername());
         query.setParameter("email", entity.getEmail());
-        List<Employee> result = query.list();
-        if(result.size() == 0) {
+        if(query.list().isEmpty()) {
             databaseSession.saveOrUpdate(entity);
             databaseSession.save(entity);
             databaseSession.flush();

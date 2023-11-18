@@ -5,9 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="fronoffice_style.css">
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <!-- SweetAlert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
@@ -554,7 +551,7 @@
             margin: 7px;
             padding: 3px 7px 3px 7px;
         }
-        
+
         .link:hover {
             opacity: 1;
             text-decoration: none;
@@ -573,167 +570,29 @@
         </li>
         <li><a href="/frontoffice/shop/cart">My cart</a></li>
         <li><a href="/frontoffice/shop/wishlist">Wishlist</a></li>
-        <li><a href="/frontoffice/complaint">Add complaint</a></li>
+        <li><a href="/frontoffice/shop/complaint">Add complaint</a></li>
     </ul>
-    <div style="float: right;">
-        <form style="margin: 0 5px 2px 5px;" action="/action_page.php">
-            <div style="float: left;">
-                <input type="text" id="product" onkeyup="dynamicSearch()" placeholder="Search..." name="product">
-            </div>
-            <div style="float: right;">
-                <button type="submit" disabled style="opacity: 1;"><i class="fa fa-search"></i></button>
-            </div>
-        </form>
-    </div>
     <div style="float: right;">
         <a class="link" href="/logout">Logout</a>
     </div>
 </nav>
 
-<div class="flex flex-row flex-wrap">
-    <div th:each="product : ${products}" class="flex flex-col border-shadow h-auto w-auto bg-white space-y-2 p-2 mr-2">
-        <!--  <img th:src="images/${product.picture}" alt="Apples" style="width:100%"> -->
-        <h1 th:text="${product.name}"></h1>
-        <p class="price" th:text="${product.price}"></p>
-        <image th:src="@{/images/{picture}(picture=${product.picture})}" th:width="300" th:height="300"></image>
-        <form action="#" th:action="@{/frontoffice/shop/wishlist/add/{id}(id=${product.id})}" method="post">
-            <button type="submit" onclick="document.getElementById('id04').style.display='block'">Add to wishlist</button>
+<div class="flex flex-col">
+    <div class="container">
+        <form th:action="@{/frontoffice/complaint/submit}" th:method="post" th:object="${complaint}">
+            <label for="complaintType">Select Type of Complaint:</label>
+            <select id="complaintType" name="complaintType" th:field="*{complaintType}">
+                <option th:each="type : ${T(com.commerce.constant.ComplaintType).values()}"
+                        th:value="${type.name()}"
+                        th:text="${type.getDisplayName()}"></option>
+            </select>
+            <br><br>
+            <label for="complaintText">Complaint Text:</label><br>
+            <textarea id="complaintText" th:field="*{description}" name="complaintText" rows="4" cols="50"></textarea>
+            <br><br>
+            <button type="submit">Submit Complaint</button>
         </form>
-        <form action="#" th:action="@{/frontoffice/shop/cart/add/{id}(id=${product.id})}" method="post">
-            <button type="submit" onclick="document.getElementById('id03').style.display='block'">Add to cart</button>
-        </form>
-        <!-- <button th:action="@{/frontoffice/whishlist/add/{id}(id=${product.id})}" th:object="${entity}"onclick="document.getElementById('id04').style.display='block'">Add to wishlist</button> -->
     </div>
 </div>
-
-<div id="id02" class="modal animate">
-    <!-- use thymeleaf to give an object -->
-    <span onclick="document.getElementById('id02').style.display='none'" style="width: auto;" class="close" title="Close Modal">&times;</span>
-    <div class="categories">
-        <ul th:each="category : ${categories}">
-            <li th:text="${category.name}"><a th:href="@{/frontoffice/products/bycateg/{id}(id=${category.id})}"></a></li>
-        </ul>
-    </div>
-</div>
-<div id="id03" class="modal animate">
-    <!-- use thymeleaf to give an object -->
-    <span onclick="document.getElementById('id03').style.display='none'" style="width: auto;" class="close" title="Close Modal">&times;</span>
-    <div class="message">
-        <p>Item added to cart!</p>
-    </div>
-</div>
-<div id="id04" class="modal animate">
-    <!-- use thymeleaf to give an object -->
-    <span onclick="document.getElementById('id04').style.display='none'" style="width: auto;" class="close" title="Close Modal">&times;</span>
-    <div class="message">
-        <p>Item added to wishlist!</p>
-    </div>
-</div>
-
-<script th:inline="javascript">
-    // Get the modal
-    var modal = document.getElementById('id02');
-    var modal2 = document.getElementById('id03');
-    var modal3 = document.getElementById('id04');
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal || event.target == modal2 || event.target == modal3) {
-            modal.style.display = "none";
-            modal2.style.display = "none";
-            modal3.style.display = "none";
-        }
-        setTimeout(function() {
-            console.log(modal2.style.display);
-            modal2.style.display = "none";
-            modal3.style.display = "none";
-        }, 1500);
-    }
-    function dynamicSearch() {
-        let input, filter, table, tr, td, i, txtValue, j;
-        input = document.getElementById("product");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td");
-            if (td) {
-                console.log(td[i]);
-                console.log(i);
-                for( j = 0; j < td.length; j++) {
-                    let div = td[j].getElementsByTagName("div")[0];
-                    let h1 = div.getElementsByTagName("h1")[0];
-                    txtValue = h1.textContent || h1.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        td[j].style.display = "";
-                    } else {
-                        td[j].style.display = "none";
-                    }
-                }
-            }
-        }
-    }
-
-    $(document).ready(function () {
-
-        /*<![CDATA[*/
-        let successMessage = /*[[${success}]]*/ '';
-        if(successMessage !== "" && successMessage !== null){
-            if(successMessage.indexOf("Error") != -1){
-                Swal.fire({
-                        background: 'rgba(0, 0, 0, 0.8)',
-                        title: '<p style="color: #ffffff">Eroare</p>',
-                        html: '<p style="color: #ffffff">' + successMessage + '</p>',
-                        icon: 'error'
-
-                    }
-
-                )
-            }else
-            if (successMessage.indexOf("Tabel") != -1) {
-                Swal.fire({
-                    title: 'Operatie efectuata',
-                    text: successMessage,
-                    icon: 'success',
-                    background: 'rgba(0, 0, 0, 0.8)',
-                    showCancelButton: true,
-                    confirmButtonColor: '#00e600',
-                    cancelButtonColor: '#4d4d4d',
-                    cancelButtonText: 'Anuleaza',
-                    confirmButtonText: 'Descarca fisier'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        console.log(fileName);
-                        let anchor = document.createElement('a');
-                        anchor.href = "product/" + fileName;
-                        anchor.download = fileName;
-                        console.log(anchor.href);
-                        anchor.click();
-                        Swal.fire({
-                            background: 'rgba(0, 0, 0, 0.8)',
-                            title: 'Succes!',
-                            html: 'Descarcare efectuata!',
-                            icon: 'success'
-
-
-                        })
-                    }
-                })
-            }else{
-                Swal.fire({
-                        background: 'rgba(0, 0, 0, 0.8)',
-                        title: '<p style="color: #ffffff">Operatie efectuata</p>',
-                        html: '<p style="color: #ffffff">' + successMessage + '</p>',
-                        icon: 'success'
-
-                    }
-
-                )
-            }
-        }
-        /*]]>*/
-
-    });
-</script>
 </body>
 </html>

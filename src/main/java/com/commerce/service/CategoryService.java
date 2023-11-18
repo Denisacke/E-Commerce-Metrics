@@ -32,6 +32,7 @@ public class CategoryService implements Service<Category> {
         return categoryRepository.findAll();
     }
 
+    public Category findByName(String categoryName){ return categoryRepository.findByName(categoryName); }
     @Override
     public boolean delete(Category entity) {
         return categoryRepository.delete(entity);

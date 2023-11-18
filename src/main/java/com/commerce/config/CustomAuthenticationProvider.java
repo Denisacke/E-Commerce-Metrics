@@ -23,7 +23,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        System.out.println("authenticating...");
         UserDetails user = userDetailsService.loadUserByUsername(username);
 
         if(user == null) {

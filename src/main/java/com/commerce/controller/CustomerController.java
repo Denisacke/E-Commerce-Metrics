@@ -9,6 +9,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.commerce.constant.Constants.FRONTOFFICE_HOME_PAGE;
+import static com.commerce.constant.Constants.SUCCESS_MESSAGE;
+
 @Controller
 public class CustomerController {
 
@@ -31,11 +34,11 @@ public class CustomerController {
     @PostMapping("/frontoffice/signup/submit")
     public String addEntry(@ModelAttribute Customer form, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         if(customerService.save(form) != null){
-            redirectAttributes.addFlashAttribute("success", "Account with user: " + form.getUsername() + " has been added");
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Account with user: " + form.getUsername() + " has been added");
         }else{
-            redirectAttributes.addFlashAttribute("success", "Error when checking input");
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error when checking input");
         }
-        return "redirect:/frontoffice";
+        return "redirect:"+ FRONTOFFICE_HOME_PAGE;
     }
 
 //    @GetMapping("/backoffice/customer/add")

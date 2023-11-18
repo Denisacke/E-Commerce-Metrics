@@ -5,9 +5,10 @@ import com.commerce.repository.ComplaintRepository;
 
 import java.util.List;
 
+@org.springframework.stereotype.Service
 public class ComplaintService implements Service<Complaint> {
 
-    private ComplaintRepository complaintRepository;
+    private final ComplaintRepository complaintRepository;
 
     public ComplaintService(){
         this.complaintRepository = new ComplaintRepository();

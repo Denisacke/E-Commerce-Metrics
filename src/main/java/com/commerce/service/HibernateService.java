@@ -8,6 +8,10 @@ import org.hibernate.cfg.AnnotationConfiguration;
 public class HibernateService {
     private static final SessionFactory sessionFactory = buildSessionFactory();
 
+    private HibernateService(){
+
+    }
+
     private static SessionFactory buildSessionFactory()
     {
         try
@@ -15,7 +19,7 @@ public class HibernateService {
             // Create the SessionFactory from hibernate.cfg.xml
             return new AnnotationConfiguration().configure(new File("hibernate.cfg.xml")).buildSessionFactory();
         }
-        catch (Throwable ex) {
+        catch (Exception ex) {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);

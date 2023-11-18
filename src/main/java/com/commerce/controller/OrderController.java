@@ -1,6 +1,6 @@
 package com.commerce.controller;
 
-import com.commerce.Constants;
+import com.commerce.constant.Constants;
 import com.commerce.model.Cart;
 import com.commerce.model.Order;
 import com.commerce.model.Product;
@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.commerce.constant.Constants.FRONTOFFICE_HOME_PAGE;
+import static com.commerce.constant.Constants.SUCCESS_MESSAGE;
 
 @Controller
 public class OrderController {
@@ -37,14 +39,14 @@ public class OrderController {
             Order order = new Order(customer_id.intValue(), sum, form, allProducts, "placed");
             product_ids.stream().map((x) -> cartService.delete(x));
             if(orderService.save(order) != null){
-                redirectAttributes.addFlashAttribute("success", "Order for user: " + customer_id + " has been added");
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Order for user: " + customer_id + " has been added");
             }else{
-                redirectAttributes.addFlashAttribute("success", "Error when checking input");
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error when checking input");
             }
             return "redirect:/frontoffice/shop";
         }
         else{
-            return "redirect:/frontoffice";
+            return "redirect:"+ FRONTOFFICE_HOME_PAGE;
         }
     }
 }

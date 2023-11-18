@@ -1,15 +1,16 @@
 package com.commerce.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.commerce.constant.ComplaintType;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "complaint")
 public class Complaint extends AbstractEntity{
 
+    @Enumerated(EnumType.STRING)
     @Column
-    private String type;
+    private ComplaintType type;
 
     @Column
     private String description;
@@ -17,33 +18,30 @@ public class Complaint extends AbstractEntity{
     @Column
     private String status;
 
-    @Column
-    private int id_customer;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     public Complaint(){
 
     }
 
-    public Complaint(String type, String description, String status, int id_customer){
+    public Complaint(ComplaintType type, String description, String status, Customer customer){
         this.type = type;
         this.description = description;
         this.status = status;
-        this.id_customer = id_customer;
+        this.customer = customer;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public int getId_customer() {
-        return id_customer;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public String getType() {
+    public ComplaintType getType() {
         return type;
     }
 
@@ -55,12 +53,16 @@ public class Complaint extends AbstractEntity{
         this.description = description;
     }
 
-    public void setType(String type) {
+    public void setType(ComplaintType type) {
         this.type = type;
     }
 
-    public void setId_customer(int id_customer) {
-        this.id_customer = id_customer;
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override
@@ -69,7 +71,7 @@ public class Complaint extends AbstractEntity{
                 "type='" + type + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
-                ", id_customer=" + id_customer +
+                ", id_customer=" + customer.getId() +
                 '}';
     }
 }

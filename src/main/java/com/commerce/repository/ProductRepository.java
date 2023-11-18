@@ -15,8 +15,7 @@ public class ProductRepository implements Repository<Product> {
         databaseSession.beginTransaction();
         Query query = databaseSession.createQuery("FROM Product X WHERE X.name = :name");
         query.setParameter("name", entity.getName());
-        List<Product> result = query.list();
-        if(result.size() == 0) {
+        if(query.list().isEmpty()) {
             databaseSession.saveOrUpdate(entity);
             databaseSession.save(entity);
             databaseSession.flush();
@@ -33,14 +32,14 @@ public class ProductRepository implements Repository<Product> {
         Session databaseSession = HibernateService.getSessionFactory().openSession();
         databaseSession.beginTransaction();
         Query query = databaseSession.createQuery("UPDATE Product X SET X.description = :description," +
-                                                            " X.name = :name, X.price = :price, X.id_category = :category," +
+                                                            " X.name = :name, X.price = :price, X.category.id = :category," +
                                                             " X.picture = :picture WHERE X.id = :id");
         query.setParameter("name", entity.getName());
         query.setParameter("id", entity.getId());
         query.setParameter("description", entity.getDescription());
         query.setParameter("price", entity.getPrice());
         query.setParameter("picture", entity.getPicture());
-        query.setParameter("category", entity.getId_category());
+        query.setParameter("category", entity.getCategory().getId());
         query.executeUpdate();
         databaseSession.flush();
         databaseSession.getTransaction().commit();
@@ -55,19 +54,17 @@ public class ProductRepository implements Repository<Product> {
         return result.get(0);
     }
 
-    public List<Product> findByCategory(int id_category){
+    public List<Product> findByCategory(int categoryId){
         Session databaseSession = HibernateService.getSessionFactory().openSession();
-        Query query = databaseSession.createQuery("FROM Product X WHERE X.id_category = :id_category");
-        query.setParameter("id_category", id_category);
-        List<Product> result = query.list();
-        return result;
+        Query query = databaseSession.createQuery("FROM Product X WHERE X.category.id = :categoryId");
+        query.setParameter("categoryId", categoryId);
+        return (List<Product>) query.list();
     }
 
     public List<Product> findAll() {
         Session databaseSession = HibernateService.getSessionFactory().openSession();
         Query query = databaseSession.createQuery("from Product");
-        List<Product> result = query.list();
-        return result;
+        return (List<Product>) query.list();
     }
 
     public List<Product> findSortedProducts(String sortCriteria) {
@@ -86,7 +83,7 @@ public class ProductRepository implements Repository<Product> {
 
         String queryString = "from Product order by name " + order;
         Query query = databaseSession.createQuery(queryString);
-        return query.list();
+        return (List<Product>) query.list();
     }
 
     public boolean delete(Product entity) {

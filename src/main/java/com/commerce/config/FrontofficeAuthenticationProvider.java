@@ -21,7 +21,6 @@ public class FrontofficeAuthenticationProvider implements AuthenticationProvider
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        System.out.println("authenticating...");
         UserDetails user = userDetailsService.loadUserByUsername(username);
 
         // You should implement your own logic to check the provided password and user details.

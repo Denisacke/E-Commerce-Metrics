@@ -1,8 +1,7 @@
 package com.commerce.service;
 
-import com.commerce.Constants;
+import com.commerce.constant.Constants;
 import com.commerce.model.Customer;
-import com.commerce.model.Employee;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

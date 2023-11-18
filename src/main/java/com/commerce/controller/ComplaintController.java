@@ -2,17 +2,36 @@ package com.commerce.controller;
 
 import com.commerce.model.Complaint;
 import com.commerce.model.Customer;
+import com.commerce.model.dto.ComplaintDTO;
+import com.commerce.model.mapper.ComplaintMapper;
 import com.commerce.service.ComplaintService;
 import com.commerce.service.CustomerService;
 import com.commerce.service.MailSender;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+
+import static com.commerce.constant.Constants.SHOP_PAGE;
+import static com.commerce.constant.Constants.SUCCESS_MESSAGE;
 
 @Controller
 public class ComplaintController {
 
-    private ComplaintService complaintService = new ComplaintService();
+    private final ComplaintService complaintService;
+    private final CustomerService customerService;
+
+    @Autowired
+    public ComplaintController(ComplaintService complaintService, CustomerService customerService){
+        this.complaintService = complaintService;
+        this.customerService = customerService;
+    }
 
     @GetMapping("/backoffice/complaint")
     public String getComplaints(Model model){
@@ -23,11 +42,44 @@ public class ComplaintController {
     @GetMapping("/backoffice/complaint/view/{id}")
     public String viewComplaint(Model model, @PathVariable String id){
         Complaint entry = complaintService.findById((long) Integer.parseInt(id));
-        CustomerService customerService = new CustomerService();
-        Customer customer = customerService.findById((long) entry.getId_customer());
+
+        Customer customer = customerService.findById(entry.getCustomer().getId());
         model.addAttribute("entry", entry);
         model.addAttribute("customer", customer);
         return "view_complaint";
+    }
+
+    @GetMapping("/frontoffice/complaint")
+    public String renderComplaintForm(Model model){
+        model.addAttribute("complaint", new ComplaintDTO());
+
+        return "add_complaint";
+    }
+
+    @PostMapping("/frontoffice/complaint/submit")
+    public String sendComplaint(@ModelAttribute @Valid ComplaintDTO complaintDTO,
+                                RedirectAttributes redirectAttributes,
+                                BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error. We could not submit your complaint. Make sure you have filled everything");
+            return "redirect:" + SHOP_PAGE;
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        complaintDTO.setStatus("Pending");
+        complaintDTO.setCustomerName(username);
+
+        Complaint complaint = ComplaintMapper
+                .mapComplaintDTOToComplaint(
+                        complaintDTO,
+                        customerService.findByUsername(username)
+                );
+        complaintService.save(complaint);
+
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "You have successfully submitted a complaint");
+
+        return "redirect:" + SHOP_PAGE;
     }
 
     @PostMapping("/backoffice/complaint/view/{id}/submit")

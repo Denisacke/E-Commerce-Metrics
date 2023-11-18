@@ -16,7 +16,7 @@ public class StockRepository implements Repository<Stock> {
         Query query = databaseSession.createQuery("FROM Stock X WHERE X.id = :id");
         query.setParameter("id", entity.getId());
         List<Stock> result = query.list();
-        if(result.size() == 0) {
+        if(result.isEmpty()) {
             databaseSession.saveOrUpdate(entity);
             databaseSession.save(entity);
             databaseSession.flush();

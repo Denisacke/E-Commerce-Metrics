@@ -1,10 +1,11 @@
 package com.commerce.model;
 
-import javax.validation.constraints.Min;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 
 @Entity
 @Table(name = "product")
@@ -17,8 +18,9 @@ public class Product extends AbstractEntity{
     @Min(value = 0)
     private double price;
 
-    @Column
-    private int id_category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column
     private String description;
@@ -41,27 +43,23 @@ public class Product extends AbstractEntity{
 
     }
 
-    public Product(String name, double price, int id_category, String description) {
+    public Product(String name, double price, String description, String picture, Category category) {
         this.name = name;
         this.price = price;
-        this.id_category = id_category;
         this.description = description;
+        this.category = category;
+        this.picture = picture;
     }
 
-    public Product(String name, double price, int id_category, String description, String picture) {
+    public Product(String name, double price, String description, String picture) {
         this.name = name;
         this.price = price;
-        this.id_category = id_category;
         this.description = description;
         this.picture = picture;
     }
 
     public String getName() {
         return name;
-    }
-
-    public int getId_category() {
-        return id_category;
     }
 
     public double getPrice() {
@@ -92,7 +90,11 @@ public class Product extends AbstractEntity{
         this.price = price;
     }
 
-    public void setId_category(int id_category) {
-        this.id_category = id_category;
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

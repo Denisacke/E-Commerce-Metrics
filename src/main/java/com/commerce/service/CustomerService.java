@@ -5,9 +5,10 @@ import com.commerce.repository.CustomerRepository;
 
 import java.util.List;
 
+@org.springframework.stereotype.Service
 public class CustomerService implements Service<Customer> {
 
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
     public CustomerService(){
         this.customerRepository = new CustomerRepository();

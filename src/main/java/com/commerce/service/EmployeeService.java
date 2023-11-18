@@ -7,7 +7,7 @@ import java.util.List;
 
 public class EmployeeService implements Service<Employee> {
 
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
     public EmployeeService(){
         this.employeeRepository = new EmployeeRepository();

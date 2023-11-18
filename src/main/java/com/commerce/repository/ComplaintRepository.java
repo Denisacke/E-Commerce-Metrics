@@ -33,10 +33,10 @@ public class ComplaintRepository implements Repository<Complaint> {
         Session databaseSession = HibernateService.getSessionFactory().openSession();
         databaseSession.beginTransaction();
         Query query = databaseSession.createQuery("UPDATE Complaint X SET X.description = :description," +
-                                                            "X.id_customer = :id_customer, X.status = :status," +
+                                                            "X.customer.id = :id_customer, X.status = :status," +
                                                             "X.type = :type WHERE X.id = :id");
         query.setParameter("description", entity.getDescription());
-        query.setParameter("id_customer", entity.getId_customer());
+        query.setParameter("id_customer", entity.getCustomer().getId());
         query.setParameter("status", entity.getStatus());
         query.setParameter("type", entity.getType());
         query.setParameter("id", entity.getId());

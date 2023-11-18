@@ -21,11 +21,9 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        System.out.println("loading.." + s);
 
         Customer customer = customerRepository.findByUsername(s);
         if(customer != null){
-            System.out.println("Got to a customer");
             return new FrontofficeUser(customer);
         }
 
@@ -35,11 +33,9 @@ public class CustomUserDetailService implements UserDetailsService {
         }
         UserDetails account;
         if (employee.getIsAdmin()) {
-            System.out.println("got to admin");
             account = new BackofficeAdmin(employee);
             return account;
         }
-        System.out.println("got to simple user");
         account = new BackofficeUser(employee);
         return account;
     }

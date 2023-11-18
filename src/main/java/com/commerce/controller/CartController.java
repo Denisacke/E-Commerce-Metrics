@@ -1,6 +1,6 @@
 package com.commerce.controller;
 
-import com.commerce.Constants;
+import com.commerce.constant.Constants;
 import com.commerce.model.Cart;
 import com.commerce.model.Product;
 import com.commerce.service.CartService;
@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.commerce.constant.Constants.*;
 
 @Controller
 public class CartController {
@@ -41,7 +43,7 @@ public class CartController {
             return "my_cart";
         }
         else{
-            return "redirect:/frontoffice";
+            return "redirect:"+ FRONTOFFICE_HOME_PAGE;
         }
     }
 
@@ -53,14 +55,14 @@ public class CartController {
             Cart form = new Cart(customer_id.intValue(),Integer.parseInt((id)), 1);
             if(cartService.save(form) != null){
                 ProductService productService = new ProductService();
-                redirectAttributes.addFlashAttribute("success", "Account with user: " + productService.findById((long) Integer.parseInt(id)) + " has been added");
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Account with user: " + productService.findById((long) Integer.parseInt(id)) + " has been added");
             }else{
-                redirectAttributes.addFlashAttribute("success", "Error when checking input");
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error when checking input");
             }
             return "redirect:/frontoffice/shop/cart";
         }
         else{
-            return "redirect:/frontoffice";
+            return "redirect:"+ FRONTOFFICE_HOME_PAGE;
         }
     }
 
@@ -74,14 +76,14 @@ public class CartController {
             Cart entity = cartService.findByCustomerId(customer_id.intValue()).stream().filter((x) -> x.getId_product() == Integer.parseInt(id)).collect(Collectors.toList()).get(0);
 
             if (cartService.delete(entity)) {
-                redirectAttributes.addFlashAttribute("success", "Ai sters cu succes produsul: " + productService.findById((long) entity.getId_product()));
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Ai sters cu succes produsul: " + productService.findById((long) entity.getId_product()));
             } else {
-                redirectAttributes.addFlashAttribute("success", "Atentie! Produsul pe care incerci sa il stergi nu exista");
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Atentie! Produsul pe care incerci sa il stergi nu exista");
             }
             return "redirect:/frontoffice/shop/cart";
         }else{
-            redirectAttributes.addFlashAttribute("success", "Error. You don't have the permission to access this!");
-            return "redirect:/frontoffice";
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
+            return "redirect:"+ FRONTOFFICE_HOME_PAGE;
         }
     }
 }

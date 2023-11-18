@@ -14,15 +14,12 @@ public class BackofficeUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        System.out.println("loading.." + s);
         Employee employee = employeeRepository.findByUsername(s);
         UserDetails account;
-        if(employee.getIsAdmin()){
-            System.out.println("got to admin");
+        if(Boolean.TRUE.equals(employee.getIsAdmin())){
             account = new BackofficeAdmin(employee);
             return account;
         }
-        System.out.println("got to simple user");
         account = new BackofficeUser(employee);
         return account;
     }

@@ -1,8 +1,7 @@
 package com.commerce.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -16,6 +15,9 @@ public class Customer extends AbstractEntity{
 
     @Column
     private String email;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Complaint> complaints;
 
     public Customer(){
 
@@ -51,11 +53,18 @@ public class Customer extends AbstractEntity{
         this.password = password;
     }
 
+    public List<Complaint> getComplaints() {
+        return complaints;
+    }
+
+    public void setComplaints(List<Complaint> complaints) {
+        this.complaints = complaints;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
                 "username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

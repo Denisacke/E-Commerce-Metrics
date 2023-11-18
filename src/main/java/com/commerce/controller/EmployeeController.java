@@ -1,6 +1,6 @@
 package com.commerce.controller;
 
-import com.commerce.Constants;
+import com.commerce.constant.Constants;
 import com.commerce.model.Employee;
 import com.commerce.service.EmployeeService;
 import com.commerce.service.MailSender;
@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.commerce.constant.Constants.ERROR_ACCESS_MESSAGE;
+import static com.commerce.constant.Constants.SUCCESS_MESSAGE;
+
 @Controller
 public class EmployeeController {
 
@@ -26,7 +29,7 @@ public class EmployeeController {
             model.addAttribute("employees", employeeService.findAll());
             return "employees";
         }else{
-            redirectAttributes.addFlashAttribute("success", "Error. You don't have the permission to access this!");
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
             return "redirect:/backoffice/home";
         }
     }
@@ -38,7 +41,7 @@ public class EmployeeController {
             model.addAttribute("entry", entry);
             return "add_employee";
         }else{
-            redirectAttributes.addFlashAttribute("success", "Error. You don't have the permission to access this!");
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
             return "redirect:/backoffice/home";
         }
     }
@@ -46,19 +49,16 @@ public class EmployeeController {
     @PostMapping("/backoffice/employee/add/submit")
     public String addEntry(@ModelAttribute @Valid Employee form, BindingResult bindingResult, @RequestParam(value = "isAdmin") String check, Model model, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("success", "Error at input check");
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error at input check");
             List<ObjectError> errorList = bindingResult.getAllErrors();
-            for(int i = 0; i < bindingResult.getErrorCount(); i++){
-                System.out.println(errorList.get(i).toString());
-            }
             return "redirect:/backoffice/employee";
         }
         form.setAdmin(check.contains("true"));
 
         if(employeeService.save(form) != null){
-            redirectAttributes.addFlashAttribute("success", "Account with user: " + form.getUsername() + " has been added");
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Account with user: " + form.getUsername() + " has been added");
         }else{
-            redirectAttributes.addFlashAttribute("success", "Error when checking input");
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error when checking input");
         }
         MailSender.sendCredentials(form.getEmail(), form.getUsername(), form.getPassword());
         return "redirect:/backoffice/employee";
@@ -69,13 +69,13 @@ public class EmployeeController {
         if(request.isUserInRole(Constants.ADMIN_ROLE)) {
             Employee entity = employeeService.findById((long) Integer.parseInt(id));
             if (employeeService.delete(entity)) {
-                redirectAttributes.addFlashAttribute("success", "Ai sters cu succes produsul: " + entity.getUsername());
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Ai sters cu succes produsul: " + entity.getUsername());
             } else {
-                redirectAttributes.addFlashAttribute("success", "Atentie! Produsul pe care incerci sa il stergi nu exista");
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Atentie! Produsul pe care incerci sa il stergi nu exista");
             }
             return "redirect:/backoffice/employee";
         }else{
-            redirectAttributes.addFlashAttribute("success", "Error. You don't have the permission to access this!");
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
             return "redirect:/backoffice/home";
         }
     }
