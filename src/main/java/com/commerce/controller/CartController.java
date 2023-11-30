@@ -23,13 +23,14 @@ import static com.commerce.constant.Constants.*;
 @Controller
 public class CartController {
 
-    private CartService cartService = new CartService();
+    private final CartService cartService = new CartService();
+    private final CustomerService customerService = new CustomerService();
+    private final CategoryService categoryService = new CategoryService();
 
     @GetMapping("/frontoffice/shop/cart")
     public String getList(Model model, HttpServletRequest request) {
         if(request.isUserInRole(Constants.CUSTOMER_ROLE)){
 
-            CustomerService customerService = new CustomerService();
             Long customer_id = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
             List<Cart> product_ids = cartService.findByCustomerId(customer_id.intValue());
 
@@ -37,20 +38,18 @@ public class CartController {
             List<Product> cart_products = product_ids.stream().map((x) -> productService.findById((long) x.getId_product())).collect(Collectors.toList());
             model.addAttribute("products", cart_products);
 
-            CategoryService categoryService = new CategoryService();
             model.addAttribute("categories", categoryService.findAll());
 
             return "my_cart";
         }
         else{
-            return "redirect:"+ FRONTOFFICE_HOME_PAGE;
+            return Constants.REDIRECT_LINK+ FRONTOFFICE_HOME_PAGE;
         }
     }
 
     @PostMapping("/frontoffice/shop/cart/add/{id}")
     public String addEntry(@PathVariable String id, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         if(request.isUserInRole(Constants.CUSTOMER_ROLE)){
-            CustomerService customerService = new CustomerService();
             Long customer_id = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
             Cart form = new Cart(customer_id.intValue(),Integer.parseInt((id)), 1);
             if(cartService.save(form) != null){
@@ -62,7 +61,7 @@ public class CartController {
             return "redirect:/frontoffice/shop/cart";
         }
         else{
-            return "redirect:"+ FRONTOFFICE_HOME_PAGE;
+            return Constants.REDIRECT_LINK+ FRONTOFFICE_HOME_PAGE;
         }
     }
 
@@ -70,7 +69,6 @@ public class CartController {
     public String delEntry(Model model, @PathVariable String id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if(request.isUserInRole(Constants.CUSTOMER_ROLE)) {
             ProductService productService = new ProductService();
-            CustomerService customerService = new CustomerService();
 
             Long customer_id = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
             Cart entity = cartService.findByCustomerId(customer_id.intValue()).stream().filter((x) -> x.getId_product() == Integer.parseInt(id)).collect(Collectors.toList()).get(0);
@@ -83,7 +81,7 @@ public class CartController {
             return "redirect:/frontoffice/shop/cart";
         }else{
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
-            return "redirect:"+ FRONTOFFICE_HOME_PAGE;
+            return Constants.REDIRECT_LINK+ FRONTOFFICE_HOME_PAGE;
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.commerce.controller;
 
+import com.commerce.constant.Constants;
 import com.commerce.model.Complaint;
 import com.commerce.model.Customer;
 import com.commerce.model.dto.ComplaintDTO;
@@ -62,7 +63,7 @@ public class ComplaintController {
                                 BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error. We could not submit your complaint. Make sure you have filled everything");
-            return "redirect:" + SHOP_PAGE;
+            return Constants.REDIRECT_LINK + SHOP_PAGE;
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -79,7 +80,7 @@ public class ComplaintController {
 
         redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "You have successfully submitted a complaint");
 
-        return "redirect:" + SHOP_PAGE;
+        return Constants.REDIRECT_LINK + SHOP_PAGE;
     }
 
     @PostMapping("/backoffice/complaint/view/{id}/submit")

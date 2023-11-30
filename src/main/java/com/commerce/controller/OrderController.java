@@ -46,7 +46,7 @@ public class OrderController {
             return "redirect:/frontoffice/shop";
         }
         else{
-            return "redirect:"+ FRONTOFFICE_HOME_PAGE;
+            return Constants.REDIRECT_LINK+ FRONTOFFICE_HOME_PAGE;
         }
     }
 }

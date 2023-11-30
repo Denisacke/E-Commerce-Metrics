@@ -15,12 +15,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CustomUserDetailService detailService;
+    private final CustomUserDetailService detailService;
+
+    private final CustomAuthenticationProvider authenticationProvider;
 
     @Autowired
-    private CustomAuthenticationProvider authenticationProvider;
-
+    public WebSecurityConfig(CustomUserDetailService detailService,
+                             CustomAuthenticationProvider customAuthenticationProvider){
+        this.detailService = detailService;
+        this.authenticationProvider = customAuthenticationProvider;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

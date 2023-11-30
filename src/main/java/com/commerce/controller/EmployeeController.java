@@ -2,6 +2,8 @@ package com.commerce.controller;
 
 import com.commerce.constant.Constants;
 import com.commerce.model.Employee;
+import com.commerce.model.dto.EmployeeDTO;
+import com.commerce.model.mapper.EmployeeMapper;
 import com.commerce.service.EmployeeService;
 import com.commerce.service.MailSender;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 import static com.commerce.constant.Constants.ERROR_ACCESS_MESSAGE;
 import static com.commerce.constant.Constants.SUCCESS_MESSAGE;
@@ -21,7 +22,7 @@ import static com.commerce.constant.Constants.SUCCESS_MESSAGE;
 @Controller
 public class EmployeeController {
 
-    private EmployeeService employeeService = new EmployeeService();
+    private final EmployeeService employeeService = new EmployeeService();
 
     @GetMapping("/backoffice/employee")
     public String getEmployees(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes){
@@ -30,32 +31,31 @@ public class EmployeeController {
             return "employees";
         }else{
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
-            return "redirect:/backoffice/home";
+            return Constants.REDIRECT_LINK + Constants.BACKOFFICE_HOME_PAGE;
         }
     }
 
     @GetMapping("/backoffice/employee/add")
     public String getEntryForm(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes){
         if(request.isUserInRole(Constants.ADMIN_ROLE)) {
-            Employee entry = new Employee();
+            EmployeeDTO entry = new EmployeeDTO();
             model.addAttribute("entry", entry);
             return "add_employee";
         }else{
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
-            return "redirect:/backoffice/home";
+            return Constants.REDIRECT_LINK + Constants.BACKOFFICE_HOME_PAGE;
         }
     }
 
     @PostMapping("/backoffice/employee/add/submit")
-    public String addEntry(@ModelAttribute @Valid Employee form, BindingResult bindingResult, @RequestParam(value = "isAdmin") String check, Model model, RedirectAttributes redirectAttributes) {
+    public String addEntry(@ModelAttribute @Valid EmployeeDTO form, BindingResult bindingResult, @RequestParam(value = "isAdmin") String check, Model model, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error at input check");
-            List<ObjectError> errorList = bindingResult.getAllErrors();
-            return "redirect:/backoffice/employee";
+            return Constants.REDIRECT_LINK + Constants.EMPLOYEES_LIST_PAGE;
         }
         form.setAdmin(check.contains("true"));
 
-        if(employeeService.save(form) != null){
+        if(employeeService.save(EmployeeMapper.mapFromEmployeeDTOToEmployee(form)) != null){
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Account with user: " + form.getUsername() + " has been added");
         }else{
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error when checking input");
@@ -76,7 +76,7 @@ public class EmployeeController {
             return "redirect:/backoffice/employee";
         }else{
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
-            return "redirect:/backoffice/home";
+            return Constants.REDIRECT_LINK + Constants.BACKOFFICE_HOME_PAGE;
         }
     }
 }

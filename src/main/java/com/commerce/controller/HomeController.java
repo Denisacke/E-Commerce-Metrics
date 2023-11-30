@@ -1,7 +1,5 @@
 package com.commerce.controller;
 
-import com.commerce.service.BackofficeUserDetailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -14,9 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class HomeController {
-
-    @Autowired
-    private BackofficeUserDetailService backofficeUserDetailService;
 
     @GetMapping({"/backoffice/home", "/backoffice"})
     public String renderHomePage(Model model){

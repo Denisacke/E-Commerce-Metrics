@@ -10,7 +10,6 @@ import com.commerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -31,13 +30,13 @@ public class ProductController {
     private final ProductService productService = new ProductService();
     private final CategoryService categoryService = new CategoryService();
     
-    private final String PRODUCTS_OBJECT_NAME = "products";
+    private static final String PRODUCTS_OBJECT_NAME = "products";
     
     @Value("${spring.servlet.multipart.location}")
     private String fileLocation;
     private static final String FILE_NAME = "filename";
     
-    private final String RELATIVE_FILE_PATH = System.getProperty("user.dir");
+    private static final String RELATIVE_FILE_PATH = System.getProperty("user.dir");
 
     @GetMapping("/backoffice/product")
     public String getList(Model model, HttpServletRequest request, @RequestParam(value = "sort", required = false) String sortCriteria) {
@@ -87,7 +86,7 @@ public class ProductController {
             return "add_product";
         }else{
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
-            return "redirect:" + Constants.PRODUCTS_LIST_PAGE;
+            return Constants.REDIRECT_LINK + Constants.PRODUCTS_LIST_PAGE;
         }
 
     }
@@ -111,7 +110,9 @@ public class ProductController {
     }
 
     @PostMapping("/backoffice/product/add/submit")
-    public String addEntry(@ModelAttribute @Valid ProductDTO form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes, @RequestParam("picture") MultipartFile file) throws IOException {
+    public String addEntry(@ModelAttribute @Valid ProductDTO form,
+                           RedirectAttributes redirectAttributes,
+                           @RequestParam("picture") MultipartFile file) throws IOException {
         if(!file.isEmpty()){
             String originalFilename = file.getOriginalFilename();
 
@@ -128,19 +129,19 @@ public class ProductController {
         Category selectedCategory = categoryService.findByName(form.getCategoryName());
         redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, productService.save(ProductMapper.mapFromProductDTOToProduct(form, selectedCategory)) != null ? "You have successfully added product with name " + form.getName() : ERROR_ACCESS_MESSAGE);
 
-        return "redirect:" + Constants.PRODUCTS_LIST_PAGE;
+        return Constants.REDIRECT_LINK + Constants.PRODUCTS_LIST_PAGE;
     }
 
     @GetMapping("/backoffice/product/delete/{id}")
     public String delEntry(Model model, @PathVariable String id, RedirectAttributes redirectAttributes) {
         Product entity = productService.findById((long) Integer.parseInt(id));
         if (productService.delete(entity)) {
-            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Ai sters cu succes produsul: " + entity.getName());
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "You have successfully deleted product with name: " + entity.getName());
         } else {
-            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Atentie! Produsul pe care incerci sa il stergi nu exista");
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "The product you are trying to delete does not exist");
         }
 
-        return "redirect:" + Constants.PRODUCTS_LIST_PAGE;
+        return Constants.REDIRECT_LINK + Constants.PRODUCTS_LIST_PAGE;
     }
 
     @GetMapping("/backoffice/product/edit/{id}")
@@ -159,6 +160,6 @@ public class ProductController {
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "The product you are trying to update does not exist");
         }
 
-        return "redirect:" + Constants.PRODUCTS_LIST_PAGE;
+        return Constants.REDIRECT_LINK + Constants.PRODUCTS_LIST_PAGE;
     }
 }
