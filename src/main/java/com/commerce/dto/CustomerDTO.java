@@ -1,6 +1,6 @@
-package com.commerce.model.dto;
+package com.commerce.dto;
 
-public class EmployeeDTO {
+public class CustomerDTO {
 
     private String username;
 
@@ -8,17 +8,14 @@ public class EmployeeDTO {
 
     private String email;
 
-    private Boolean isAdmin;
-
-    public EmployeeDTO(){
+    public CustomerDTO(){
 
     }
 
-    public EmployeeDTO(String username, String password, String email, Boolean isAdmin) {
+    public CustomerDTO(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.isAdmin = isAdmin;
     }
 
     public String getUsername() {
@@ -43,13 +40,5 @@ public class EmployeeDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Boolean getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
     }
 }

@@ -3,8 +3,8 @@ package com.commerce.controller;
 import com.commerce.constant.Constants;
 import com.commerce.model.Complaint;
 import com.commerce.model.Customer;
-import com.commerce.model.dto.ComplaintDTO;
-import com.commerce.model.mapper.ComplaintMapper;
+import com.commerce.dto.ComplaintDTO;
+import com.commerce.mapper.ComplaintMapper;
 import com.commerce.service.ComplaintService;
 import com.commerce.service.CustomerService;
 import com.commerce.service.MailSender;
@@ -27,11 +27,13 @@ public class ComplaintController {
 
     private final ComplaintService complaintService;
     private final CustomerService customerService;
+    private final MailSender mailSender;
 
     @Autowired
-    public ComplaintController(ComplaintService complaintService, CustomerService customerService){
+    public ComplaintController(ComplaintService complaintService, CustomerService customerService, MailSender mailSender) {
         this.complaintService = complaintService;
         this.customerService = customerService;
+        this.mailSender = mailSender;
     }
 
     @GetMapping("/backoffice/complaint")
@@ -88,7 +90,7 @@ public class ComplaintController {
         Complaint complaint = complaintService.findById((long) Integer.parseInt(id));
         if(actionButton.equalsIgnoreCase("response")){
             complaint.setStatus("Responded");
-            MailSender.sendResponse(email, response);
+            mailSender.sendResponse(email, response);
         }else{
             complaint.setStatus("Spam");
         }

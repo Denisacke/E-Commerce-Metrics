@@ -1,8 +1,8 @@
-package com.commerce.model.mapper;
+package com.commerce.mapper;
 
 import com.commerce.model.Category;
 import com.commerce.model.Product;
-import com.commerce.model.dto.ProductDTO;
+import com.commerce.dto.ProductDTO;
 
 public class ProductMapper {
 

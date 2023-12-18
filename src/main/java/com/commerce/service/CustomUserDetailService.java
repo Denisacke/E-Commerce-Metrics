@@ -13,11 +13,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    public CustomUserDetailService(EmployeeRepository employeeRepository,
+                                   CustomerRepository customerRepository) {
+        this.employeeRepository = employeeRepository;
+        this.customerRepository = customerRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -32,7 +37,7 @@ public class CustomUserDetailService implements UserDetailsService {
             return null;
         }
         UserDetails account;
-        if (employee.getIsAdmin()) {
+        if (Boolean.TRUE.equals(employee.getIsAdmin())) {
             account = new BackofficeAdmin(employee);
             return account;
         }

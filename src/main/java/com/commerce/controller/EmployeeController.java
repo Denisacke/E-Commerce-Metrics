@@ -2,14 +2,14 @@ package com.commerce.controller;
 
 import com.commerce.constant.Constants;
 import com.commerce.model.Employee;
-import com.commerce.model.dto.EmployeeDTO;
-import com.commerce.model.mapper.EmployeeMapper;
+import com.commerce.dto.EmployeeDTO;
+import com.commerce.mapper.EmployeeMapper;
 import com.commerce.service.EmployeeService;
 import com.commerce.service.MailSender;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,6 +23,12 @@ import static com.commerce.constant.Constants.SUCCESS_MESSAGE;
 public class EmployeeController {
 
     private final EmployeeService employeeService = new EmployeeService();
+    private final MailSender mailSender;
+
+    @Autowired
+    public EmployeeController(MailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     @GetMapping("/backoffice/employee")
     public String getEmployees(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes){
@@ -60,7 +66,7 @@ public class EmployeeController {
         }else{
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error when checking input");
         }
-        MailSender.sendCredentials(form.getEmail(), form.getUsername(), form.getPassword());
+        mailSender.sendCredentials(form.getEmail(), form.getUsername(), form.getPassword());
         return "redirect:/backoffice/employee";
     }
 

@@ -1,6 +1,7 @@
 package com.commerce.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity
@@ -11,9 +12,11 @@ public class Customer extends AbstractEntity{
     private String username;
 
     @Column(name = "password")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$*%^&+=])(?=\\S+$).{6,}$")
     private String password;
 
     @Column
+    @Pattern(regexp="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     private String email;
 
     @OneToMany(mappedBy = "customer")

@@ -1,9 +1,8 @@
 package com.commerce.controller;
 
 import com.commerce.constant.Constants;
-import com.commerce.model.Customer;
-import com.commerce.model.dto.CustomerDTO;
-import com.commerce.model.mapper.CustomerMapper;
+import com.commerce.dto.CustomerDTO;
+import com.commerce.mapper.CustomerMapper;
 import com.commerce.service.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

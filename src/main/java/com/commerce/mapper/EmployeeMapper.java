@@ -1,7 +1,7 @@
-package com.commerce.model.mapper;
+package com.commerce.mapper;
 
 import com.commerce.model.Employee;
-import com.commerce.model.dto.EmployeeDTO;
+import com.commerce.dto.EmployeeDTO;
 
 public class EmployeeMapper {
 

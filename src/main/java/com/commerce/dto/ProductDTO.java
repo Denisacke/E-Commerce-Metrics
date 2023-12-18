@@ -1,4 +1,4 @@
-package com.commerce.model.dto;
+package com.commerce.dto;
 
 public class ProductDTO {
 

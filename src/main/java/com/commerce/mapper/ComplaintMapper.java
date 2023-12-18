@@ -1,8 +1,8 @@
-package com.commerce.model.mapper;
+package com.commerce.mapper;
 
 import com.commerce.model.Complaint;
 import com.commerce.model.Customer;
-import com.commerce.model.dto.ComplaintDTO;
+import com.commerce.dto.ComplaintDTO;
 
 public class ComplaintMapper {
 

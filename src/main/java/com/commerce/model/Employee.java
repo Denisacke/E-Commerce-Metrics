@@ -17,7 +17,7 @@ public class Employee extends AbstractEntity{
     private String password;
 
     @Column
-    @Pattern(regexp=".+@.+\\.[a-z]+")
+    @Pattern(regexp="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     private String email;
 
     @Column

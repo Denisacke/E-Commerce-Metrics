@@ -1,8 +1,6 @@
-package com.commerce.model.dto;
+package com.commerce.dto;
 
 import com.commerce.constant.ComplaintType;
-
-import javax.persistence.Column;
 
 public class ComplaintDTO {
 
