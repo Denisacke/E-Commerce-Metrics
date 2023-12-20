@@ -8,11 +8,11 @@ import javax.persistence.Table;
 @Table(name = "cart")
 public class Cart extends AbstractEntity{
 
-    @Column
-    private int id_customer;
+    @Column(name = "id_customer")
+    private int customerId;
 
     @Column
-    private int id_product;
+    private int productId;
 
     @Column
     private int quantity;
@@ -21,26 +21,26 @@ public class Cart extends AbstractEntity{
 
     }
 
-    public Cart(int id_customer, int id_product, int quantity){
-        this.id_customer = id_customer;
-        this.id_product = id_product;
+    public Cart(int customerId, int productId, int quantity){
+        this.customerId = customerId;
+        this.productId = productId;
         this.quantity = quantity;
     }
 
-    public void setId_Customer(int id_customer){
-        this.id_customer = id_customer;
+    public void setCustomerId(int customerId){
+        this.customerId = customerId;
     }
 
-    public void setId_Product(int id_product){
-        this.id_product = id_product;
+    public void setProductId(int productId){
+        this.productId = productId;
     }
 
-    public int getId_customer() {
-        return id_customer;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public int getId_product() {
-        return id_product;
+    public int getProductId() {
+        return productId;
     }
 
     public int getQuantity() {

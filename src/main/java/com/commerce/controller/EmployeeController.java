@@ -22,11 +22,12 @@ import static com.commerce.constant.Constants.SUCCESS_MESSAGE;
 @Controller
 public class EmployeeController {
 
-    private final EmployeeService employeeService = new EmployeeService();
+    private final EmployeeService employeeService;
     private final MailSender mailSender;
 
     @Autowired
-    public EmployeeController(MailSender mailSender) {
+    public EmployeeController(EmployeeService employeeService, MailSender mailSender) {
+        this.employeeService = employeeService;
         this.mailSender = mailSender;
     }
 

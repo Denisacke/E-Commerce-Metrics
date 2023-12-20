@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,6 +21,7 @@ import java.util.Properties;
 @Component
 @Scope("singleton")
 public class MailSender {
+    private static final Logger logger = LoggerFactory.getLogger(MailSender.class);
 
     @Value("${spring.mail.username}")
     private String emailCredential;
@@ -68,7 +72,7 @@ public class MailSender {
             msg.setSentDate(new Date());
             Transport.send(msg);
         } catch (MessagingException e) {
-            System.out.println(e);
+            logger.debug(e.getMessage());
         }
     }
 
@@ -87,7 +91,7 @@ public class MailSender {
             msg.setSentDate(new Date());
             Transport.send(msg);
         } catch (MessagingException e) {
-            System.out.println(e);
+            logger.debug(e.getMessage());
         }
     }
 }

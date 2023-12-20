@@ -2,17 +2,16 @@ package com.commerce.service;
 
 import com.commerce.model.Category;
 import com.commerce.repository.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+@org.springframework.stereotype.Service
 public class CategoryService implements Service<Category> {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    public CategoryService(){
-        this.categoryRepository = new CategoryRepository();
-    }
-
+    @Autowired
     public CategoryService(CategoryRepository categoryRepository){
         this.categoryRepository = categoryRepository;
     }

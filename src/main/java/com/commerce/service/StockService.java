@@ -7,7 +7,7 @@ import java.util.List;
 
 public class StockService implements Service<Stock> {
 
-    private StockRepository stockRepository;
+    private final StockRepository stockRepository;
 
     public StockService(){
         this.stockRepository = new StockRepository();

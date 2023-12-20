@@ -2,15 +2,18 @@ package com.commerce.service;
 
 import com.commerce.model.Employee;
 import com.commerce.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+@org.springframework.stereotype.Service
 public class EmployeeService implements Service<Employee> {
 
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeService(){
-        this.employeeRepository = new EmployeeRepository();
+    @Autowired
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
     @Override

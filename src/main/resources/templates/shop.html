@@ -596,9 +596,6 @@
         <h1 th:text="${product.name}"></h1>
         <p class="price" th:text="${product.price}"></p>
         <image th:src="@{/images/{picture}(picture=${product.picture})}" th:width="300" th:height="300"></image>
-        <form action="#" th:action="@{/frontoffice/shop/wishlist/add/{id}(id=${product.id})}" method="post">
-            <button type="submit" onclick="document.getElementById('id04').style.display='block'">Add to wishlist</button>
-        </form>
         <form action="#" th:action="@{/frontoffice/shop/cart/add/{id}(id=${product.id})}" method="post">
             <button type="submit" onclick="document.getElementById('id03').style.display='block'">Add to cart</button>
         </form>

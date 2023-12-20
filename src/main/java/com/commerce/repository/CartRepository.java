@@ -7,6 +7,7 @@ import org.hibernate.Session;
 
 import java.util.List;
 
+@org.springframework.stereotype.Repository
 public class CartRepository implements Repository<Cart> {
     @Override
     public Cart save(Cart entity) {
@@ -24,24 +25,21 @@ public class CartRepository implements Repository<Cart> {
         Session databaseSession = HibernateService.getSessionFactory().openSession();
         Query query = databaseSession.createQuery("FROM Cart X WHERE X.id = :id");
         query.setParameter("id", id);
-        List<Cart> result = query.list();
-        return result.get(0);
+        return (Cart) query.list().get(0);
     }
 
     public List<Cart> findByCustomerId(int id_customer){
         Session databaseSession = HibernateService.getSessionFactory().openSession();
-        Query query = databaseSession.createQuery("FROM Cart X WHERE X.id_customer = :id_customer");
+        Query query = databaseSession.createQuery("FROM Cart X WHERE X.customerId = :id_customer");
         query.setParameter("id_customer", id_customer);
-        List<Cart> result = query.list();
-        return result;
+        return (List<Cart>) query.list();
     }
 
     @Override
     public List<Cart> findAll() {
         Session databaseSession = HibernateService.getSessionFactory().openSession();
         Query query = databaseSession.createQuery("FROM Cart");
-        List<Cart> result = query.list();
-        return result;
+        return (List<Cart>) query.list();
     }
 
     @Override

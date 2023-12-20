@@ -2,17 +2,16 @@ package com.commerce.service;
 
 import com.commerce.model.Cart;
 import com.commerce.repository.CartRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+@org.springframework.stereotype.Service
 public class CartService implements Service<Cart> {
 
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
 
-    public CartService(){
-        this.cartRepository = new CartRepository();
-    }
-
+    @Autowired
     public CartService(CartRepository cartRepository){
         this.cartRepository = cartRepository;
     }
@@ -27,8 +26,8 @@ public class CartService implements Service<Cart> {
         return cartRepository.findById(id);
     }
 
-    public List<Cart> findByCustomerId(int id_customer){
-        return cartRepository.findByCustomerId(id_customer);
+    public List<Cart> findByCustomerId(int customerId){
+        return cartRepository.findByCustomerId(customerId);
     }
 
     @Override

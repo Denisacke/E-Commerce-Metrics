@@ -7,6 +7,7 @@ import com.commerce.dto.ProductDTO;
 import com.commerce.mapper.ProductMapper;
 import com.commerce.service.CategoryService;
 import com.commerce.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,11 +28,17 @@ import static com.commerce.constant.Constants.SUCCESS_MESSAGE;
 @Controller
 public class ProductController {
 
-    private final ProductService productService = new ProductService();
-    private final CategoryService categoryService = new CategoryService();
-    
+    private final ProductService productService;
+    private final CategoryService categoryService;
+
     private static final String PRODUCTS_OBJECT_NAME = "products";
-    
+
+    @Autowired
+    public ProductController(ProductService productService, CategoryService categoryService) {
+        this.productService = productService;
+        this.categoryService = categoryService;
+    }
+
     @Value("${spring.servlet.multipart.location}")
     private String fileLocation;
     private static final String FILE_NAME = "filename";

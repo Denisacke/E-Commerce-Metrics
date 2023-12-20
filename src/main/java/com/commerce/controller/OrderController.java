@@ -5,6 +5,7 @@ import com.commerce.model.Cart;
 import com.commerce.model.Order;
 import com.commerce.model.Product;
 import com.commerce.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,26 +21,35 @@ import static com.commerce.constant.Constants.SUCCESS_MESSAGE;
 @Controller
 public class OrderController {
 
-    OrderService orderService = new OrderService();
+    private final OrderService orderService;
+    private final CartService cartService;
+    private final ProductService productService;
+
+    @Autowired
+    public OrderController(OrderService orderService,
+                           CartService cartService,
+                           ProductService productService) {
+        this.orderService = orderService;
+        this.cartService = cartService;
+        this.productService = productService;
+    }
 
     @PostMapping("/frontoffice/shop/order/submit")
     public String addEntry(@RequestParam String form, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         if(request.isUserInRole(Constants.CUSTOMER_ROLE)){
             CustomerService customerService = new CustomerService();
-            Long customer_id = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
+            Long customerId = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
+            
+            List<Cart> productIds = cartService.findByCustomerId(customerId.intValue());
+            List<Product> cartProducts = productIds.stream().map(x -> productService.findById((long) x.getProductId())).collect(Collectors.toList());
 
-            CartService cartService = new CartService();
-            List<Cart> product_ids = cartService.findByCustomerId(customer_id.intValue());
-            ProductService productService = new ProductService();
-            List<Product> cart_products = product_ids.stream().map((x) -> productService.findById((long) x.getId_product())).collect(Collectors.toList());
+            int sum = (cartProducts.stream().map(Product::getPrice).reduce(0.0, Double::sum)).intValue();
+            String allProducts = productIds.stream().map(x -> String.valueOf(x.getProductId())).collect(Collectors.joining(", "));
 
-            int sum = (cart_products.stream().map((x) -> x.getPrice()).reduce(0.0, Double::sum)).intValue();
-            String allProducts = product_ids.stream().map((x) -> String.valueOf(x.getId_product())).collect(Collectors.joining(", "));
-
-            Order order = new Order(customer_id.intValue(), sum, form, allProducts, "placed");
-            product_ids.stream().map((x) -> cartService.delete(x));
+            Order order = new Order(customerId.intValue(), sum, form, allProducts, "placed");
+            productIds.forEach(cartService::delete);
             if(orderService.save(order) != null){
-                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Order for user: " + customer_id + " has been added");
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Order for user: " + customerId + " has been added");
             }else{
                 redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error when checking input");
             }

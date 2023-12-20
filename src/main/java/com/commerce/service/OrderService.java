@@ -5,6 +5,7 @@ import com.commerce.repository.OrderRepository;
 
 import java.util.List;
 
+@org.springframework.stereotype.Service
 public class OrderService implements Service<Order> {
 
     private OrderRepository orderRepository;

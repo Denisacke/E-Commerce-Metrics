@@ -30,7 +30,9 @@ public class ComplaintController {
     private final MailSender mailSender;
 
     @Autowired
-    public ComplaintController(ComplaintService complaintService, CustomerService customerService, MailSender mailSender) {
+    public ComplaintController(ComplaintService complaintService,
+                               CustomerService customerService,
+                               MailSender mailSender) {
         this.complaintService = complaintService;
         this.customerService = customerService;
         this.mailSender = mailSender;

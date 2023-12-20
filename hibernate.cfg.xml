@@ -19,7 +19,6 @@
         <mapping class="com.commerce.model.Order"/>
         <mapping class="com.commerce.model.Product"/>
         <mapping class="com.commerce.model.Stock"/>
-        <mapping class="com.commerce.model.Wishlist"/>
     </session-factory>
 
 </hibernate-configuration>
