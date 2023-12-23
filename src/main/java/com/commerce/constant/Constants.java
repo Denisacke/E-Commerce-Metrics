@@ -11,6 +11,8 @@ public class Constants {
     public static final String EMPLOYEES_LIST_PAGE = "/backoffice/employee";
     public static final String FRONTOFFICE_HOME_PAGE = "/frontoffice";
     public static final String SHOP_PAGE = "/frontoffice/shop";
+    public static final String CART_PAGE = "/frontoffice/shop/cart";
+
 
     public static final String REDIRECT_LINK = "redirect:";
     public static final String PRODUCTS = "/products";

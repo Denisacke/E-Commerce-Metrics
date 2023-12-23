@@ -27,12 +27,18 @@ public class CartController {
     private final CartService cartService;
     private final CustomerService customerService;
     private final CategoryService categoryService;
+    private final ProductService productService;
 
+    private static final String MY_CART_TEMPLATE = "my_cart";
     @Autowired
-    public CartController(CartService cartService, CustomerService customerService, CategoryService categoryService) {
+    public CartController(CartService cartService,
+                          CustomerService customerService,
+                          CategoryService categoryService,
+                          ProductService productService) {
         this.cartService = cartService;
         this.customerService = customerService;
         this.categoryService = categoryService;
+        this.productService = productService;
     }
 
     @GetMapping("/frontoffice/shop/cart")
@@ -42,13 +48,12 @@ public class CartController {
             Long customerId = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
             List<Cart> productIds = cartService.findByCustomerId(customerId.intValue());
 
-            ProductService productService = new ProductService();
             List<Product> cartProducts = productIds.stream().map(x -> productService.findById((long) x.getProductId())).collect(Collectors.toList());
             model.addAttribute("products", cartProducts);
 
             model.addAttribute("categories", categoryService.findAll());
 
-            return "my_cart";
+            return MY_CART_TEMPLATE;
         }
         else{
             return Constants.REDIRECT_LINK+ FRONTOFFICE_HOME_PAGE;
@@ -61,23 +66,20 @@ public class CartController {
             Long customerId = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
             Cart form = new Cart(customerId.intValue(),Integer.parseInt((id)), 1);
             if(cartService.save(form) != null){
-                ProductService productService = new ProductService();
                 redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Account with user: " + productService.findById((long) Integer.parseInt(id)) + " has been added");
             }else{
                 redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error when checking input");
             }
-            return "redirect:/frontoffice/shop/cart";
+            return REDIRECT_LINK + CART_PAGE;
         }
         else{
-            return Constants.REDIRECT_LINK+ FRONTOFFICE_HOME_PAGE;
+            return Constants.REDIRECT_LINK + FRONTOFFICE_HOME_PAGE;
         }
     }
 
     @PostMapping("/frontoffice/shop/cart/delete/{id}")
     public String delEntry(Model model, @PathVariable String id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if(request.isUserInRole(Constants.CUSTOMER_ROLE)) {
-            ProductService productService = new ProductService();
-
             Long customerId = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
             Cart entity = cartService.findByCustomerId(customerId.intValue()).stream().filter(x -> x.getProductId() == Integer.parseInt(id)).collect(Collectors.toList()).get(0);
 
@@ -86,10 +88,10 @@ public class CartController {
             } else {
                 redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Atentie! Produsul pe care incerci sa il stergi nu exista");
             }
-            return "redirect:/frontoffice/shop/cart";
+            return REDIRECT_LINK + CART_PAGE;
         }else{
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
-            return Constants.REDIRECT_LINK+ FRONTOFFICE_HOME_PAGE;
+            return Constants.REDIRECT_LINK + FRONTOFFICE_HOME_PAGE;
         }
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 @org.springframework.stereotype.Service
 public class ProductService implements Service<Product> {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductService(){
         this.productRepository = new ProductRepository();
@@ -22,8 +22,8 @@ public class ProductService implements Service<Product> {
         return productRepository.findById(id);
     }
 
-    public List<Product> findByCategory(int id_category){
-        return productRepository.findByCategory(id_category);
+    public List<Product> findByCategory(int categoryId){
+        return productRepository.findByCategory(categoryId);
     }
 
     public Product update(Product entity){

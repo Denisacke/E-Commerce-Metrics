@@ -32,24 +32,30 @@ public class ProductController {
     private final CategoryService categoryService;
 
     private static final String PRODUCTS_OBJECT_NAME = "products";
+    private static final String SHOP_TEMPLATE = "shop";
 
+    @Value("${spring.servlet.multipart.location}")
+    private String fileLocation;
+    private static final String FILE_NAME = "filename";
+
+    private static final String RELATIVE_FILE_PATH = System.getProperty("user.dir");
     @Autowired
     public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
         this.categoryService = categoryService;
     }
 
-    @Value("${spring.servlet.multipart.location}")
-    private String fileLocation;
-    private static final String FILE_NAME = "filename";
-    
-    private static final String RELATIVE_FILE_PATH = System.getProperty("user.dir");
-
     @GetMapping("/backoffice/product")
     public String getList(Model model, HttpServletRequest request, @RequestParam(value = "sort", required = false) String sortCriteria) {
         Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
         
         model.addAttribute(PRODUCTS_OBJECT_NAME, productService.findAll(sortCriteria));
+        addModelAttributes(inputFlashMap, model);
+
+        return PRODUCTS_OBJECT_NAME;
+    }
+
+    private void addModelAttributes(Map<String, ?> inputFlashMap, Model model){
         try {
             if(inputFlashMap == null){
                 throw new NullPointerException();
@@ -61,7 +67,6 @@ public class ProductController {
             model.addAttribute(FILE_NAME, "");
         }
 
-        return PRODUCTS_OBJECT_NAME;
     }
 
     @GetMapping("/frontoffice/shop")
@@ -70,32 +75,18 @@ public class ProductController {
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute(PRODUCTS_OBJECT_NAME, productService.findAll());
 
-        try {
-            if(inputFlashMap == null){
-                throw new NullPointerException();
-            }
-            model.addAttribute(SUCCESS_MESSAGE, inputFlashMap.get(SUCCESS_MESSAGE));
-            model.addAttribute(FILE_NAME, inputFlashMap.get(FILE_NAME));
-        } catch (Exception e) {
-            model.addAttribute(SUCCESS_MESSAGE, "");
-            model.addAttribute(FILE_NAME, "");
-        }
+        addModelAttributes(inputFlashMap, model);
 
-        return "shop";
+        return SHOP_TEMPLATE;
     }
 
     @GetMapping("/backoffice/product/add")
-    public String getEntryForm(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        if(request.isUserInRole(Constants.ADMIN_ROLE)){
-            ProductDTO entry = new ProductDTO();
-            model.addAttribute("entry", entry);
-            model.addAttribute("categories", categoryService.findAll());
-            return "add_product";
-        }else{
-            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
-            return Constants.REDIRECT_LINK + Constants.PRODUCTS_LIST_PAGE;
-        }
+    public String getProductEntryForm(Model model) {
+        ProductDTO productEntry = new ProductDTO();
 
+        model.addAttribute("entry", productEntry);
+        model.addAttribute("categories", categoryService.findAll());
+        return "add_product";
     }
 
     @GetMapping("/frontoffice/products/bycateg/{id}")
@@ -103,21 +94,12 @@ public class ProductController {
         Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
         model.addAttribute(PRODUCTS_OBJECT_NAME, productService.findByCategory(Integer.parseInt(id)));
 
-        try {
-            if(inputFlashMap == null){
-                throw new NullPointerException();
-            }
-            model.addAttribute(SUCCESS_MESSAGE, inputFlashMap.get(SUCCESS_MESSAGE));
-            model.addAttribute(FILE_NAME, inputFlashMap.get(FILE_NAME));
-        } catch (Exception e) {
-            model.addAttribute(SUCCESS_MESSAGE, "");
-            model.addAttribute(FILE_NAME, "");
-        }
-        return "shop";
+        addModelAttributes(inputFlashMap, model);
+        return SHOP_TEMPLATE;
     }
 
     @PostMapping("/backoffice/product/add/submit")
-    public String addEntry(@ModelAttribute @Valid ProductDTO form,
+    public String addProductEntry(@ModelAttribute @Valid ProductDTO form,
                            RedirectAttributes redirectAttributes,
                            @RequestParam("picture") MultipartFile file) throws IOException {
         if(!file.isEmpty()){
@@ -140,10 +122,10 @@ public class ProductController {
     }
 
     @GetMapping("/backoffice/product/delete/{id}")
-    public String delEntry(Model model, @PathVariable String id, RedirectAttributes redirectAttributes) {
-        Product entity = productService.findById((long) Integer.parseInt(id));
-        if (productService.delete(entity)) {
-            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "You have successfully deleted product with name: " + entity.getName());
+    public String delProductEntry(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        Product product = productService.findById((long) Integer.parseInt(id));
+        if (productService.delete(product)) {
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "You have successfully deleted product with name: " + product.getName());
         } else {
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "The product you are trying to delete does not exist");
         }
@@ -153,13 +135,13 @@ public class ProductController {
 
     @GetMapping("/backoffice/product/edit/{id}")
     public String editForm(Model model, @PathVariable String id){
-        Product entry = productService.findById((long) Integer.parseInt(id));
-        model.addAttribute("entry", entry);
+        Product productEntry = productService.findById((long) Integer.parseInt(id));
+        model.addAttribute("entry", productEntry);
         return "edit_product";
     }
 
     @PostMapping("/backoffice/product/edit/submit")
-    public String editEntry(Model model, @ModelAttribute ProductDTO form, RedirectAttributes redirectAttributes) {
+    public String editProductEntry(@ModelAttribute ProductDTO form, RedirectAttributes redirectAttributes) {
         Category selectedCategory = categoryService.findByName(form.getCategoryName());
         if (productService.update(ProductMapper.mapFromProductDTOToProduct(form, selectedCategory)) != null) {
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "You have successfully updated product with name: " + form.getName());
