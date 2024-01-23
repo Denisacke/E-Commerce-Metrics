@@ -1,5 +1,8 @@
 package com.commerce.dto;
 
+/**
+ * DTO class for representing Product entities in the frontend
+ */
 public class ProductDTO {
 
     private String name;

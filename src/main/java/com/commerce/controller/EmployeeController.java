@@ -32,15 +32,19 @@ public class EmployeeController {
         this.mailSender = mailSender;
     }
 
+    private String handleRestrictedPage(RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
+
+        return Constants.REDIRECT_LINK + Constants.BACKOFFICE_HOME_PAGE;
+    }
     @GetMapping("/backoffice/employee")
     public String getEmployees(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes){
         if(request.isUserInRole(Constants.ADMIN_ROLE)) {
             model.addAttribute(EMPLOYEES_PAGE, employeeService.findAll());
             return EMPLOYEES_PAGE;
-        }else{
-            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
-            return Constants.REDIRECT_LINK + Constants.BACKOFFICE_HOME_PAGE;
         }
+
+        return handleRestrictedPage(redirectAttributes);
     }
 
     @GetMapping("/backoffice/employee/add")
@@ -49,10 +53,9 @@ public class EmployeeController {
             EmployeeDTO employeeEntry = new EmployeeDTO();
             model.addAttribute("entry", employeeEntry);
             return ADD_EMPLOYEE_PAGE;
-        }else{
-            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
-            return Constants.REDIRECT_LINK + Constants.BACKOFFICE_HOME_PAGE;
         }
+
+        return handleRestrictedPage(redirectAttributes);
     }
 
     @PostMapping("/backoffice/employee/add/submit")
@@ -65,10 +68,11 @@ public class EmployeeController {
 
         if(employeeService.save(EmployeeMapper.mapFromEmployeeDTOToEmployee(form)) != null){
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Account with user: " + form.getUsername() + " has been added");
+            mailSender.sendCredentials(form.getEmail(), form.getUsername(), form.getPassword());
         }else{
             redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error when checking input");
         }
-        mailSender.sendCredentials(form.getEmail(), form.getUsername(), form.getPassword());
+
         return Constants.REDIRECT_LINK + EMPLOYEES_LIST_PAGE;
     }
 
@@ -82,9 +86,8 @@ public class EmployeeController {
                 redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "The product you are trying to delete does not exist!");
             }
             return Constants.REDIRECT_LINK + EMPLOYEES_LIST_PAGE;
-        }else{
-            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
-            return Constants.REDIRECT_LINK + Constants.BACKOFFICE_HOME_PAGE;
         }
+
+        return handleRestrictedPage(redirectAttributes);
     }
 }

@@ -40,11 +40,11 @@ public class OrderController {
             CustomerService customerService = new CustomerService();
             Long customerId = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
             
-            List<Cart> productIds = cartService.findByCustomerId(customerId.intValue());
-            List<Product> cartProducts = productIds.stream().map(x -> productService.findById((long) x.getProductId())).collect(Collectors.toList());
+            List<Cart> productIds = cartService.findByCustomerId(customerId);
+            List<Product> cartProducts = productIds.stream().map(x -> productService.findById((long) x.getProduct().getId())).collect(Collectors.toList());
 
             int sum = (cartProducts.stream().map(Product::getPrice).reduce(0.0, Double::sum)).intValue();
-            String allProducts = productIds.stream().map(x -> String.valueOf(x.getProductId())).collect(Collectors.joining(", "));
+            String allProducts = productIds.stream().map(x -> String.valueOf(x.getProduct().getId())).collect(Collectors.joining(", "));
 
             Order order = new Order(customerId.intValue(), sum, form, allProducts, "placed");
             productIds.forEach(cartService::delete);

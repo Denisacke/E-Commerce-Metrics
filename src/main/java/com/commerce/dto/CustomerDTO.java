@@ -1,5 +1,8 @@
 package com.commerce.dto;
 
+/**
+ * DTO class for representing Customer entities in the frontend
+ */
 public class CustomerDTO {
 
     private String username;

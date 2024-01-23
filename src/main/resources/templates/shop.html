@@ -591,15 +591,13 @@
 </nav>
 
 <div class="flex flex-row flex-wrap">
-    <div th:each="product : ${products}" class="flex flex-col border-shadow h-auto w-auto bg-white space-y-2 p-2 mr-2">
-        <!--  <img th:src="images/${product.picture}" alt="Apples" style="width:100%"> -->
+    <div th:each="product : ${products}" class="flex flex-col border-shadow h-auto w-auto mt-1 bg-white space-y-2 p-2 mr-2">
         <h1 th:text="${product.name}"></h1>
         <p class="price" th:text="${product.price}"></p>
         <image th:src="@{/images/{picture}(picture=${product.picture})}" th:width="300" th:height="300"></image>
-        <form action="#" th:action="@{/frontoffice/shop/cart/add/{id}(id=${product.id})}" method="post">
+        <form action="#" th:action="@{/frontoffice/shop/cart/add/{id}(id=${product.id})}" method="post" class="flex flex-grow items-end">
             <button type="submit" onclick="document.getElementById('id03').style.display='block'">Add to cart</button>
         </form>
-        <!-- <button th:action="@{/frontoffice/whishlist/add/{id}(id=${product.id})}" th:object="${entity}"onclick="document.getElementById('id04').style.display='block'">Add to wishlist</button> -->
     </div>
 </div>
 
@@ -689,7 +687,7 @@
             }else
             if (successMessage.indexOf("Tabel") != -1) {
                 Swal.fire({
-                    title: 'Operatie efectuata',
+                    title: 'Successful operation',
                     text: successMessage,
                     icon: 'success',
                     background: 'rgba(0, 0, 0, 0.8)',
@@ -719,7 +717,7 @@
             }else{
                 Swal.fire({
                         background: 'rgba(0, 0, 0, 0.8)',
-                        title: '<p style="color: #ffffff">Operatie efectuata</p>',
+                        title: '<p style="color: #ffffff">Successful operation</p>',
                         html: '<p style="color: #ffffff">' + successMessage + '</p>',
                         icon: 'success'
 

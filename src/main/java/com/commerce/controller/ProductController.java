@@ -116,7 +116,11 @@ public class ProductController {
         }
 
         Category selectedCategory = categoryService.findByName(form.getCategoryName());
-        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, productService.save(ProductMapper.mapFromProductDTOToProduct(form, selectedCategory)) != null ? "You have successfully added product with name " + form.getName() : ERROR_ACCESS_MESSAGE);
+        if(productService.save(ProductMapper.mapFromProductDTOToProduct(form, selectedCategory)) != null){
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "You have successfully added product with name " + form.getName());
+        } else {
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, ERROR_ACCESS_MESSAGE);
+        }
 
         return Constants.REDIRECT_LINK + Constants.PRODUCTS_LIST_PAGE;
     }
@@ -137,6 +141,7 @@ public class ProductController {
     public String editForm(Model model, @PathVariable String id){
         Product productEntry = productService.findById((long) Integer.parseInt(id));
         model.addAttribute("entry", productEntry);
+
         return "edit_product";
     }
 

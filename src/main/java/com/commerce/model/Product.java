@@ -1,11 +1,8 @@
 package com.commerce.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -30,6 +27,9 @@ public class Product extends AbstractEntity{
 
     @Column
     private Integer stock;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<Cart> carts;
 
     public Integer getStock() {
         return stock;
@@ -56,6 +56,14 @@ public class Product extends AbstractEntity{
         this.price = price;
         this.description = description;
         this.picture = picture;
+    }
+
+    public Set<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(Set<Cart> carts) {
+        this.carts = carts;
     }
 
     public String getName() {

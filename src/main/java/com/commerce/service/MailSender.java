@@ -18,6 +18,9 @@ import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Properties;
 
+/**
+ * Class which sends emails upon account creation or complaint submissions
+ */
 @Component
 @Scope("singleton")
 public class MailSender {

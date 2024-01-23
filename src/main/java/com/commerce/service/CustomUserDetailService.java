@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Class which takes care of user fetching upon authentication
+ */
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 

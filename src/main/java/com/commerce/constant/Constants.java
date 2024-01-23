@@ -1,5 +1,8 @@
 package com.commerce.constant;
 
+/**
+ * Class containing most of the constants used throughout the project
+ */
 public class Constants {
 
     private Constants(){
@@ -9,6 +12,7 @@ public class Constants {
     public static final String BACKOFFICE_HOME_PAGE = "/backoffice/home";
     public static final String PRODUCTS_LIST_PAGE = "/backoffice/product";
     public static final String EMPLOYEES_LIST_PAGE = "/backoffice/employee";
+    public static final String CUSTOMERS_LIST_PAGE = "/backoffice/customer";
     public static final String FRONTOFFICE_HOME_PAGE = "/frontoffice";
     public static final String SHOP_PAGE = "/frontoffice/shop";
     public static final String CART_PAGE = "/frontoffice/shop/cart";

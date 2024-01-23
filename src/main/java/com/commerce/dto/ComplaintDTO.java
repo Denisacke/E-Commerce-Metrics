@@ -2,6 +2,9 @@ package com.commerce.dto;
 
 import com.commerce.constant.ComplaintType;
 
+/**
+ * DTO class for representing Complaint entities in the frontend
+ */
 public class ComplaintDTO {
 
     private ComplaintType complaintType;

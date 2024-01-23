@@ -2,6 +2,7 @@ package com.commerce.controller;
 
 import com.commerce.constant.Constants;
 import com.commerce.model.Cart;
+import com.commerce.model.Customer;
 import com.commerce.model.Product;
 import com.commerce.service.CartService;
 import com.commerce.service.CategoryService;
@@ -46,9 +47,9 @@ public class CartController {
         if(request.isUserInRole(Constants.CUSTOMER_ROLE)){
 
             Long customerId = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
-            List<Cart> productIds = cartService.findByCustomerId(customerId.intValue());
+            List<Cart> cartEntries = cartService.findByCustomerId(customerId);
 
-            List<Product> cartProducts = productIds.stream().map(x -> productService.findById((long) x.getProductId())).collect(Collectors.toList());
+            List<Product> cartProducts = cartEntries.stream().map(x -> productService.findById(x.getProduct().getId())).collect(Collectors.toList());
             model.addAttribute("products", cartProducts);
 
             model.addAttribute("categories", categoryService.findAll());
@@ -63,10 +64,11 @@ public class CartController {
     @PostMapping("/frontoffice/shop/cart/add/{id}")
     public String addEntry(@PathVariable String id, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         if(request.isUserInRole(Constants.CUSTOMER_ROLE)){
-            Long customerId = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
-            Cart form = new Cart(customerId.intValue(),Integer.parseInt((id)), 1);
+            Customer customer = (customerService.findByUsername(request.getUserPrincipal().getName()));
+            Product product = productService.findById(Long.parseLong(id));
+            Cart form = new Cart(customer, product, 1);
             if(cartService.save(form) != null){
-                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Account with user: " + productService.findById((long) Integer.parseInt(id)) + " has been added");
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Product added to cart");
             }else{
                 redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Error when checking input");
             }
@@ -81,12 +83,12 @@ public class CartController {
     public String delEntry(Model model, @PathVariable String id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if(request.isUserInRole(Constants.CUSTOMER_ROLE)) {
             Long customerId = (customerService.findByUsername(request.getUserPrincipal().getName())).getId();
-            Cart entity = cartService.findByCustomerId(customerId.intValue()).stream().filter(x -> x.getProductId() == Integer.parseInt(id)).collect(Collectors.toList()).get(0);
+            Cart entity = cartService.findByCustomerId(customerId).stream().filter(x -> x.getProduct().getId() == Integer.parseInt(id)).collect(Collectors.toList()).get(0);
 
             if (cartService.delete(entity)) {
-                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Ai sters cu succes produsul: " + productService.findById((long) entity.getProductId()));
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "You have successfully deleted product: " + productService.findById((long) entity.getProduct().getId()));
             } else {
-                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Atentie! Produsul pe care incerci sa il stergi nu exista");
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "An issue occurred when trying to delete a cart entry");
             }
             return REDIRECT_LINK + CART_PAGE;
         }else{

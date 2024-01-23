@@ -3,6 +3,7 @@ package com.commerce.model;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -22,6 +23,9 @@ public class Customer extends AbstractEntity{
     @OneToMany(mappedBy = "customer")
     private List<Complaint> complaints;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Set<Cart> carts;
+
     public Customer(){
 
     }
@@ -30,6 +34,14 @@ public class Customer extends AbstractEntity{
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public Set<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(Set<Cart> carts) {
+        this.carts = carts;
     }
 
     public String getEmail() {

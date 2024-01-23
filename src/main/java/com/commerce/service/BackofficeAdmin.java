@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public class BackofficeAdmin implements UserDetails {
 
-    private Employee employee;
+    private final Employee employee;
 
     public BackofficeAdmin(){
         employee = new Employee();

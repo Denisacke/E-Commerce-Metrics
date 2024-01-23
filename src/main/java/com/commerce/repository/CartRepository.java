@@ -28,10 +28,10 @@ public class CartRepository implements Repository<Cart> {
         return (Cart) query.list().get(0);
     }
 
-    public List<Cart> findByCustomerId(int id_customer){
+    public List<Cart> findByCustomerId(Long customerId){
         Session databaseSession = HibernateService.getSessionFactory().openSession();
-        Query query = databaseSession.createQuery("FROM Cart X WHERE X.customerId = :id_customer");
-        query.setParameter("id_customer", id_customer);
+        Query query = databaseSession.createQuery("FROM Cart X WHERE X.customer.id = :id_customer");
+        query.setParameter("id_customer", (Long)customerId);
         return (List<Cart>) query.list();
     }
 

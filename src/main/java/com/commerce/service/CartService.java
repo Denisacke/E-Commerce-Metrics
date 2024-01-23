@@ -26,7 +26,7 @@ public class CartService implements Service<Cart> {
         return cartRepository.findById(id);
     }
 
-    public List<Cart> findByCustomerId(int customerId){
+    public List<Cart> findByCustomerId(Long customerId){
         return cartRepository.findByCustomerId(customerId);
     }
 

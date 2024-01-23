@@ -1,5 +1,8 @@
 package com.commerce.dto;
 
+/**
+ * DTO class for representing Employee entities in the frontend
+ */
 public class EmployeeDTO {
 
     private String username;

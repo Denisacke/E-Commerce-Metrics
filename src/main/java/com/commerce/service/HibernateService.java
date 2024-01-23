@@ -5,6 +5,9 @@ import java.io.File;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
+/**
+ * Class which sets up the Hibernate instance according to provided configuration
+ */
 public class HibernateService {
     private static final SessionFactory sessionFactory = buildSessionFactory();
 

@@ -594,40 +594,18 @@
     </div>
 </nav>
 
-<div class="container-shop">
-    <table class = "table-home2" id="cartProducts">
-        <tr>
-            <td>
-                <div class="card-horizontal">
-                    <div style="float: left">
-                        <h1 style="line-height: 100px; text-align: center"
-                        >Total:</h1>
-                    </div>
-                    <div style="float:right;">
-                        <h1 id="total" style="line-height: 100px; text-align: center">Text...</h1>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr th:each="product : ${products}">
-            <td>
-                <div class="card-horizontal">
-                    <div style="float: left">
-                   <!--     <img th:src="images/${product.picture}" alt="Kiwis" style="width:100px"> -->
-                    </div>
-                    <div style="float: left">
-                        <h2 th:text="${product.name}"></h2>
-                        <p class="price" th:text="${product.price}"></p>
-                    </div>
-                    <div style="float:right;">
-                        <form action="#" th:action="@{/frontoffice/shop/cart/delete/{id}(id=${product.id})}" method="post">
-                            <button type="submit" onclick="sum();"><i class="fa fa-trash"></i></button>
-                        </form>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
+<div class="flex flex-col">
+    <div th:each="product : ${products}">
+        <div class="flex flex-row w-full bg-white">
+            <h2 th:text="${product.name}"></h2>
+            <p class="price" th:text="${product.price}"></p>
+            <div class="flex flex-grow justify-end">
+                <form action="#" th:action="@{/frontoffice/shop/cart/delete/{id}(id=${product.id})}" method="post">
+                    <button type="submit" class="cursor-pointer"><i class="fa fa-trash"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="container-form">
         <form action="#" th:action="@{/frontoffice/shop/order/submit}"  method="post" class="container-form">
             <label for="address">Address</label>
@@ -636,16 +614,6 @@
                 <button type="submit">Place order</button>
             </div>
         </form>
-    </div>
-</div>
-
-<div id="id02" class="modal animate">
-    <!-- use thymeleaf to give an object -->
-    <span onclick="document.getElementById('id02').style.display='none'" style="width: auto;" class="close" title="Close Modal">&times;</span>
-    <div class="categories">
-        <ul th:each="category : ${categories}">
-            <li th:text="${category.name}"><a th:href="@{/frontoffice/products/bycateg/{id}(id=${category.id})}"></a></li>
-        </ul>
     </div>
 </div>
 <script>
