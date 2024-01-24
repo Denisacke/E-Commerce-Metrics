@@ -5,6 +5,8 @@ package com.commerce.dto;
  */
 public class ProductDTO {
 
+    private int id;
+
     private String name;
 
     private double price;
@@ -16,6 +18,14 @@ public class ProductDTO {
     private Integer stock;
 
     private String categoryName;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCategoryName() {
         return categoryName;
@@ -63,5 +73,18 @@ public class ProductDTO {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", picture='" + picture + '\'' +
+                ", stock=" + stock +
+                ", categoryName='" + categoryName + '\'' +
+                '}';
     }
 }

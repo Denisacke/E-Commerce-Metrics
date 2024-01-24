@@ -15,7 +15,7 @@ public class Product extends AbstractEntity{
     @Min(value = 0)
     private double price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -104,5 +104,17 @@ public class Product extends AbstractEntity{
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", category=" + category +
+                ", description='" + description + '\'' +
+                ", picture='" + picture + '\'' +
+                ", stock=" + stock +
+                '}';
     }
 }

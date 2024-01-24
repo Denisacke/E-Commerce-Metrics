@@ -273,7 +273,7 @@
                 </div>
             </div>
         </nav>
-        <div class="modal fade" id="productDetailsModal" tabindex="-1" role="dialog" aria-labelledby="productDetailsModalLabel" aria-hidden="true">
+        <div class="modal" id="productDetailsModal" role="dialog" aria-labelledby="productDetailsModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -283,10 +283,10 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- Add details here dynamically using JavaScript -->
                         <p id="productName"></p>
                         <p id="productPrice"></p>
-                        <!-- Add more details as needed -->
+                        <p id="productDescription"></p>
+                        <img id="productImage" width="200" height="200">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -328,12 +328,13 @@
                     <td th:text="${product.price}">Text ...</td>
                     <td th:text="${product.picture}">Text ...</td>
                     <td>
-                        <a href="#" class="btn btn-dark">
+                        <button th:attr="onclick=|showProductDetails('${product.id}')|"
+                           class="btn btn-dark">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
                                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
                                 <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
                             </svg>
-                        </a>
+                        </button>
                         <a th:href="@{/backoffice/product/edit/{id}(id = ${product.id})}" class="btn btn-dark">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
@@ -379,24 +380,26 @@
 
 <script type="text/javascript" th:inline="javascript">
 
-    function showProductDetails(product) {
-        console.log('PRODUCT', product);
+    /*<![CDATA[*/
+    function showProductDetails(productId) {
+        let productList = [[${products}]];
+        let product = productList.find(product => String(product.id) === productId);
         document.getElementById('productName').innerText = 'Product Name: ' + product.name;
         document.getElementById('productPrice').innerText = 'Product Price: ' + product.price;
-
+        document.getElementById('productDescription').innerText = 'Product Description: ' + product.description;
+        document.getElementById('productImage').src = '/images/' + product.picture;
         // Show the modal
         $('#productDetailsModal').modal('show');
+        $('.modal-backdrop').remove();
     }
-
+    /*]]>*/
     function filter() {
         let input = document.getElementById("product-input");
         let tr = document.getElementById("content-table").getElementsByTagName("tr");
         for(let i = 1; i < tr.length; i++){
             let td = tr[i].getElementsByTagName("td")[1];
-            console.log(tr[i]);
             if(td != null){
                 let txt = td.textContent;
-                console.log(txt);
                 if(txt.toUpperCase().indexOf(input.value.toUpperCase()) != -1){
                     tr[i].style.display = "";
                 }else{
@@ -414,6 +417,7 @@
 
         /*<![CDATA[*/
 
+        let products = /*[[${products}]]*/ 'default';
         let successMessage = [[${success}]];
         let fileName = [[${filename}]];
         if(successMessage != ""){
@@ -445,7 +449,6 @@
                         let anchor = document.createElement('a');
                         anchor.href = "product/" + fileName;
                         anchor.download = fileName;
-                        console.log(anchor.href);
                         anchor.click();
                         Swal.fire({
                             background: 'rgba(0, 0, 0, 0.8)',

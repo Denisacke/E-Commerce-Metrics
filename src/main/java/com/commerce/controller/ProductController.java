@@ -48,8 +48,8 @@ public class ProductController {
     @GetMapping("/backoffice/product")
     public String getList(Model model, HttpServletRequest request, @RequestParam(value = "sort", required = false) String sortCriteria) {
         Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
-        
-        model.addAttribute(PRODUCTS_OBJECT_NAME, productService.findAll(sortCriteria));
+
+        model.addAttribute(PRODUCTS_OBJECT_NAME, productService.findAll(sortCriteria).stream().map(ProductMapper::mapFromProductToProductDTO).toArray());
         addModelAttributes(inputFlashMap, model);
 
         return PRODUCTS_OBJECT_NAME;
