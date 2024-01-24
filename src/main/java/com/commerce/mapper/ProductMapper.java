@@ -18,7 +18,7 @@ public class ProductMapper {
         productDTO.setId(product.getId().intValue());
         productDTO.setName(product.getName());
         productDTO.setPicture(product.getPicture());
-        productDTO.setCategoryName(product.getCategory() != null ? product.getCategory().getName() : null);
+        productDTO.setCategoryName(product.getCategory() != null ? product.getCategory().getName() : "");
         productDTO.setPrice(product.getPrice());
         productDTO.setDescription(product.getDescription());
         productDTO.setStock(product.getStock());

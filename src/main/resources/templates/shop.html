@@ -593,6 +593,7 @@
 <div class="flex flex-row flex-wrap">
     <div th:each="product : ${products}" class="flex flex-col border-shadow h-auto w-auto mt-1 bg-white space-y-2 p-2 mr-2">
         <h1 th:text="${product.name}"></h1>
+        <h1><span>Category:</span><span th:text="${product.categoryName}"></span></h1>
         <p class="price" th:text="${product.price}"></p>
         <image th:src="@{/images/{picture}(picture=${product.picture})}" th:width="300" th:height="300"></image>
         <form action="#" th:action="@{/frontoffice/shop/cart/add/{id}(id=${product.id})}" method="post" class="flex flex-grow items-end">

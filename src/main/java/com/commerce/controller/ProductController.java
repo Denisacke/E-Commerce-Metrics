@@ -73,7 +73,7 @@ public class ProductController {
     public String getProducts(Model model, HttpServletRequest request) throws NullPointerException {
         Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
         model.addAttribute("categories", categoryService.findAll());
-        model.addAttribute(PRODUCTS_OBJECT_NAME, productService.findAll());
+        model.addAttribute(PRODUCTS_OBJECT_NAME, productService.findAll().stream().map(ProductMapper::mapFromProductToProductDTO).toArray());
 
         addModelAttributes(inputFlashMap, model);
 
